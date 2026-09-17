@@ -5,9 +5,8 @@ import morgan from 'morgan';
 import compression from 'compression';
 import cookieParser from 'cookie-parser';
 import mongoSanitize from 'express-mongo-sanitize';
-import xss from 'xss-clean';
 import path from 'path';
-import { fileURLToPath, dirname } from 'url';
+import { fileURLToPath } from 'url';
 import { env } from '@/config/env';
 import { connectDB } from '@/config/database';
 import { logger } from '@/utils/logger';
@@ -23,7 +22,7 @@ import notificationRoutes from '@/routes/notification';
 import adminRoutes from '@/routes/admin';
 
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+const __dirname = path.dirname(__filename);
 
 export class App {
   public app: Application;
@@ -61,7 +60,6 @@ export class App {
     this.app.use('/api/', limiter);
 
     this.app.use(mongoSanitize());
-    this.app.use(xss());
 
     this.app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')));
   }

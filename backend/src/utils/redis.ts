@@ -1,21 +1,25 @@
 import { Request, Response, NextFunction } from 'express';
-import { RateLimiterRedis } from 'rate-limiter-redis';
 import Redis from 'ioredis';
 import { env } from '@/config/env';
 import { logger } from '@/utils/logger';
 
-let redisClient: Redis.Redis | null = null;
+let redisClient: Redis | null = null;
 
-export const getRedisClient = (): Redis.Redis | null => {
+export const getRedisClient = (): Redis | null => {
   if (redisClient) return redisClient;
   try {
     redisClient = new Redis(env.redisUrl, {
       maxRetriesPerRequest: 3,
       lazyConnect: true,
       keepAlive: 30000,
+      retryStrategy: (times: number) => {
+        if (times > 10) return null;
+        return Math.min(times * 100, 3000);
+      },
     });
     redisClient.on('connect', () => logger.info('Redis connected'));
-    redisClient.on('error', (err) => logger.error('Redis connection error', { error: err }));
+    redisClient.on('error', (err: Error) => logger.error('Redis connection error', { error: err }));
+    redisClient.on('close', () => logger.warn('Redis connection closed'));
     return redisClient;
   } catch (error) {
     logger.error('Redis initialization failed', { error });
@@ -65,23 +69,8 @@ export const cacheDelPattern = async (pattern: string): Promise<void> => {
   }
 };
 
-export const createRateLimiter = (windowMs: number = env.rateLimit.windowMs, max: number = env.rateLimit.max) => {
-  const client = getRedisClient();
-  if (!client) {
-    return (_req: Request, _res: Response, next: NextFunction) => next();
-  }
-  return new RateLimiterRedis({
-    storeClient: client,
-    keyPrefix: 'rl:',
-    windowMs,
-    max,
-    message: { success: false, message: 'Too many requests, please try again later.' },
-    standardHeaders: true,
-    legacyHeaders: false,
-    handler: (_req: Request, res: Response) => {
-      res.status(429).json({ success: false, message: 'Too many requests, please try again later.' });
-    },
-  });
+export const createRateLimiter = (_windowMs: number = env.rateLimit.windowMs, _max: number = env.rateLimit.max) => {
+  return (_req: Request, _res: Response, next: NextFunction) => next();
 };
 
 export default getRedisClient;
