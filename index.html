@@ -1,0 +1,2226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MODERN SOFTWARE &amp; CYBERSECURITY IN 2026 — The Complete Developer Guide</title>
+<meta name="description" content="A complete 2026 developer guide to modern software and cybersecurity: AI agents, authentication, OAuth/OIDC, JWT, Zero Trust, DevSecOps, cloud security, API security, and more.">
+<style>
+/* ============ RESET & TOKENS ============ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --bg:#04050a;
+  --bg2:#080b14;
+  --panel:rgba(255,255,255,.035);
+  --panel-2:rgba(255,255,255,.055);
+  --border:rgba(255,255,255,.09);
+  --border-hi:rgba(34,211,238,.35);
+  --txt:#e7eefb;
+  --muted:#8b9ab3;
+  --dim:#5d6b82;
+  --cyan:#22d3ee;
+  --blue:#3b82f6;
+  --violet:#8b5cf6;
+  --pink:#ec4899;
+  --green:#22c55e;
+  --amber:#f59e0b;
+  --red:#ef4444;
+  --radius:16px;
+  --radius-sm:10px;
+  --font:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+  --mono:'JetBrains Mono','SF Mono',ui-monospace,Menlo,Consolas,monospace;
+}
+
+html{scroll-behavior:smooth;scroll-padding-top:90px}
+
+body{
+  font-family:var(--font);
+  background:var(--bg);
+  color:var(--txt);
+  line-height:1.7;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ============ BACKGROUND LAYERS ============ */
+#bg-canvas{
+  position:fixed;inset:0;z-index:0;
+  opacity:.55;pointer-events:none;
+}
+
+.orb{
+  position:fixed;border-radius:50%;
+  filter:blur(90px);opacity:.28;
+  pointer-events:none;z-index:0;
+  animation:float 22s ease-in-out infinite;
+}
+.orb-1{width:520px;height:520px;background:radial-gradient(circle,#22d3ee,transparent 70%);top:-160px;left:-140px}
+.orb-2{width:560px;height:560px;background:radial-gradient(circle,#8b5cf6,transparent 70%);top:35%;right:-220px;animation-delay:-7s}
+.orb-3{width:460px;height:460px;background:radial-gradient(circle,#ec4899,transparent 70%);bottom:-180px;left:25%;animation-delay:-14s}
+
+@keyframes float{
+  0%,100%{transform:translate3d(0,0,0) scale(1)}
+  33%{transform:translate3d(40px,-50px,0) scale(1.08)}
+  66%{transform:translate3d(-35px,35px,0) scale(.94)}
+}
+
+.grid-overlay{
+  position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.35;
+  background-image:
+    linear-gradient(rgba(255,255,255,.028) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.028) 1px,transparent 1px);
+  background-size:60px 60px;
+  mask-image:radial-gradient(ellipse 80% 60% at 50% 0%,#000 20%,transparent 75%);
+  -webkit-mask-image:radial-gradient(ellipse 80% 60% at 50% 0%,#000 20%,transparent 75%);
+}
+
+/* ============ PROGRESS BAR ============ */
+#progress{
+  position:fixed;top:0;left:0;height:3px;width:0;z-index:999;
+  background:linear-gradient(90deg,var(--cyan),var(--violet),var(--pink));
+  box-shadow:0 0 14px rgba(34,211,238,.7);
+  transition:width .1s linear;
+}
+
+/* ============ NAV ============ */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:900;
+  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+  background:rgba(4,5,10,.72);
+  border-bottom:1px solid var(--border);
+  transition:transform .35s ease;
+}
+.nav-inner{
+  max-width:1240px;margin:0 auto;padding:0 24px;
+  height:64px;display:flex;align-items:center;gap:24px;
+}
+.brand{
+  display:flex;align-items:center;gap:10px;
+  font-weight:800;font-size:.95rem;letter-spacing:.5px;
+  white-space:nowrap;
+}
+.brand-dot{
+  width:10px;height:10px;border-radius:50%;
+  background:var(--cyan);
+  box-shadow:0 0 0 0 rgba(34,211,238,.7);
+  animation:pulse 2s infinite;
+}
+@keyframes pulse{
+  0%{box-shadow:0 0 0 0 rgba(34,211,238,.7)}
+  70%{box-shadow:0 0 0 14px rgba(34,211,238,0)}
+  100%{box-shadow:0 0 0 0 rgba(34,211,238,0)}
+}
+.brand span{background:linear-gradient(90deg,var(--cyan),var(--violet));-webkit-background-clip:text;background-clip:text;color:transparent}
+
+.nav-links{
+  display:flex;gap:4px;overflow-x:auto;flex:1;
+  scrollbar-width:none;
+}
+.nav-links::-webkit-scrollbar{display:none}
+.nav-links a{
+  color:var(--muted);text-decoration:none;font-size:.78rem;font-weight:600;
+  padding:7px 11px;border-radius:8px;white-space:nowrap;
+  transition:.2s;letter-spacing:.2px;
+}
+.nav-links a:hover{color:var(--txt);background:var(--panel-2)}
+.nav-links a.active{color:var(--cyan);background:rgba(34,211,238,.1)}
+
+/* ============ HERO ============ */
+header.hero{
+  position:relative;z-index:2;
+  min-height:100vh;display:flex;align-items:center;
+  padding:120px 24px 80px;
+}
+.hero-grid{
+  max-width:1240px;margin:0 auto;width:100%;
+  display:grid;grid-template-columns:1.15fr .85fr;gap:60px;align-items:center;
+}
+
+.badge{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:7px 15px;border-radius:999px;
+  background:rgba(34,211,238,.08);
+  border:1px solid rgba(34,211,238,.28);
+  color:var(--cyan);font-size:.72rem;font-weight:700;
+  letter-spacing:1.4px;text-transform:uppercase;
+  margin-bottom:26px;
+}
+.badge::before{
+  content:'';width:6px;height:6px;border-radius:50%;
+  background:var(--cyan);animation:pulse 1.8s infinite;
+}
+
+h1.hero-title{
+  font-size:clamp(2.1rem,5.2vw,4rem);
+  line-height:1.06;font-weight:900;letter-spacing:-1.6px;
+  margin-bottom:22px;
+}
+h1.hero-title .grad{
+  background:linear-gradient(100deg,var(--cyan) 0%,var(--violet) 45%,var(--pink) 90%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  background-size:200% auto;
+  animation:shine 6s linear infinite;
+}
+@keyframes shine{to{background-position:200% center}}
+
+.hero-sub{
+  font-size:1.06rem;color:var(--muted);max-width:620px;margin-bottom:34px;
+}
+.hero-sub strong{color:var(--txt);font-weight:600}
+
+.hero-tags{display:flex;flex-wrap:wrap;gap:9px;margin-bottom:38px}
+.tag{
+  font-size:.72rem;font-weight:600;padding:6px 13px;border-radius:8px;
+  background:var(--panel);border:1px solid var(--border);color:var(--muted);
+  transition:.25s;
+}
+.tag:hover{border-color:var(--border-hi);color:var(--cyan);transform:translateY(-2px)}
+
+.hero-stats{display:flex;gap:36px;flex-wrap:wrap}
+.stat b{
+  display:block;font-size:1.75rem;font-weight:900;letter-spacing:-1px;
+  background:linear-gradient(90deg,var(--cyan),var(--violet));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.stat small{font-size:.72rem;color:var(--dim);text-transform:uppercase;letter-spacing:1.2px;font-weight:600}
+
+/* ============ RADAR ============ */
+.radar-wrap{
+  position:relative;display:flex;align-items:center;justify-content:center;
+}
+.radar-ring{
+  position:absolute;border-radius:50%;
+  border:1px solid rgba(34,211,238,.14);
+  animation:ripple 4s ease-out infinite;
+}
+.radar-ring:nth-child(1){width:100%;height:100%;animation-delay:0s}
+.radar-ring:nth-child(2){width:100%;height:100%;animation-delay:1.3s}
+.radar-ring:nth-child(3){width:100%;height:100%;animation-delay:2.6s}
+@keyframes ripple{
+  0%{transform:scale(.55);opacity:.85}
+  100%{transform:scale(1.35);opacity:0}
+}
+#radar{
+  position:relative;z-index:2;width:100%;max-width:440px;height:auto;
+  filter:drop-shadow(0 0 34px rgba(34,211,238,.28));
+}
+
+/* ============ LAYOUT ============ */
+main{position:relative;z-index:2}
+.wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+
+section{padding:78px 0;position:relative}
+section + section{border-top:1px solid rgba(255,255,255,.045)}
+
+.sec-num{
+  font-family:var(--mono);font-size:.74rem;font-weight:700;
+  color:var(--cyan);letter-spacing:2.4px;margin-bottom:12px;
+  display:flex;align-items:center;gap:12px;
+}
+.sec-num::after{
+  content:'';flex:1;height:1px;max-width:120px;
+  background:linear-gradient(90deg,rgba(34,211,238,.6),transparent);
+}
+
+h2{
+  font-size:clamp(1.6rem,3.4vw,2.4rem);font-weight:850;letter-spacing:-.9px;
+  line-height:1.15;margin-bottom:18px;
+}
+h2 .accent{
+  background:linear-gradient(90deg,var(--cyan),var(--violet));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+
+h3{
+  font-size:1.16rem;font-weight:750;margin:38px 0 14px;
+  letter-spacing:-.3px;display:flex;align-items:center;gap:10px;
+}
+h3::before{
+  content:'';width:4px;height:19px;border-radius:2px;
+  background:linear-gradient(180deg,var(--cyan),var(--violet));
+  flex-shrink:0;
+}
+
+h4{font-size:.98rem;font-weight:700;margin:24px 0 10px;color:var(--cyan)}
+
+p{color:var(--muted);margin-bottom:16px;font-size:.96rem}
+p strong{color:var(--txt);font-weight:650}
+p em{color:var(--cyan);font-style:normal;font-weight:600}
+
+a{color:var(--cyan)}
+
+.lead{font-size:1.05rem;color:#a9b6cc;max-width:800px}
+
+/* ============ CARDS ============ */
+.card{
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:24px 26px;
+  margin:22px 0;
+  transition:.3s;
+  position:relative;overflow:hidden;
+}
+.card::before{
+  content:'';position:absolute;top:0;left:0;width:3px;height:100%;
+  background:linear-gradient(180deg,var(--cyan),var(--violet));
+  opacity:0;transition:.3s;
+}
+.card:hover{border-color:rgba(34,211,238,.25);background:var(--panel-2);transform:translateY(-3px)}
+.card:hover::before{opacity:1}
+
+.grid{display:grid;gap:18px;margin:24px 0}
+.grid-2{grid-template-columns:repeat(2,1fr)}
+.grid-3{grid-template-columns:repeat(3,1fr)}
+.grid-4{grid-template-columns:repeat(4,1fr)}
+
+.mini{
+  background:var(--panel);border:1px solid var(--border);
+  border-radius:var(--radius-sm);padding:18px 20px;
+  transition:.3s;
+}
+.mini:hover{border-color:var(--border-hi);background:var(--panel-2);transform:translateY(-3px)}
+.mini b{display:block;color:var(--txt);font-size:.9rem;margin-bottom:6px;font-weight:700}
+.mini span{font-size:.84rem;color:var(--muted);line-height:1.6}
+
+/* ============ TABLES ============ */
+.table-wrap{
+  overflow-x:auto;margin:24px 0;border-radius:var(--radius);
+  border:1px solid var(--border);background:var(--panel);
+}
+table{width:100%;border-collapse:collapse;font-size:.86rem;min-width:560px}
+thead{background:rgba(34,211,238,.06)}
+th{
+  text-align:left;padding:14px 18px;font-weight:700;font-size:.74rem;
+  text-transform:uppercase;letter-spacing:1.1px;color:var(--cyan);
+  border-bottom:1px solid var(--border);white-space:nowrap;
+}
+td{
+  padding:13px 18px;border-bottom:1px solid rgba(255,255,255,.05);
+  color:var(--muted);vertical-align:top;
+}
+td strong{color:var(--txt);font-weight:650}
+tbody tr{transition:.2s}
+tbody tr:hover{background:rgba(34,211,238,.045)}
+tbody tr:last-child td{border-bottom:none}
+
+/* ============ FLOW DIAGRAMS ============ */
+.flow{
+  display:flex;flex-direction:column;gap:0;
+  margin:26px 0;padding:24px;
+  background:linear-gradient(180deg,rgba(34,211,238,.035),rgba(139,92,246,.035));
+  border:1px solid var(--border);border-radius:var(--radius);
+  align-items:center;
+}
+.flow-node{
+  font-family:var(--mono);font-size:.79rem;font-weight:600;
+  padding:11px 20px;border-radius:10px;
+  background:rgba(255,255,255,.045);
+  border:1px solid var(--border);
+  color:var(--txt);text-align:center;
+  transition:.3s;white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis;
+}
+.flow-node:hover{
+  border-color:var(--cyan);
+  box-shadow:0 0 22px rgba(34,211,238,.22);
+  transform:scale(1.035);
+}
+.flow-node.hi{
+  background:linear-gradient(90deg,rgba(34,211,238,.16),rgba(139,92,246,.16));
+  border-color:rgba(34,211,238,.4);color:#fff;
+}
+.flow-arrow{
+  color:var(--cyan);font-size:1rem;line-height:1;
+  padding:5px 0;opacity:.65;
+  animation:bob 1.8s ease-in-out infinite;
+}
+@keyframes bob{0%,100%{transform:translateY(0);opacity:.5}50%{transform:translateY(4px);opacity:1}}
+
+.flow-row{
+  display:flex;flex-wrap:wrap;gap:10px;align-items:center;
+  justify-content:center;
+}
+.flow-row .flow-arrow{padding:0 2px;transform:rotate(-90deg)}
+
+/* ============ CODE ============ */
+pre{
+  background:#06080f;border:1px solid var(--border);
+  border-radius:var(--radius-sm);padding:18px 20px;
+  overflow-x:auto;margin:18px 0;
+  font-family:var(--mono);font-size:.8rem;line-height:1.75;
+  color:#a5d6ff;position:relative;
+}
+pre::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(34,211,238,.5),transparent);
+}
+code{
+  font-family:var(--mono);font-size:.83em;
+  background:rgba(34,211,238,.09);color:var(--cyan);
+  padding:2px 7px;border-radius:5px;
+}
+
+/* ============ CALLOUTS ============ */
+.callout{
+  border-left:3px solid var(--cyan);
+  background:rgba(34,211,238,.05);
+  padding:16px 22px;border-radius:0 var(--radius-sm) var(--radius-sm) 0;
+  margin:22px 0;
+}
+.callout p{margin:0;color:#b8c6dc;font-size:.92rem}
+.callout.warn{border-color:var(--amber);background:rgba(245,158,11,.06)}
+.callout.danger{border-color:var(--red);background:rgba(239,68,68,.06)}
+.callout.ok{border-color:var(--green);background:rgba(34,197,94,.06)}
+
+.aaa{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin:30px 0;
+}
+.aaa-card{
+  text-align:center;padding:28px 18px;border-radius:var(--radius);
+  border:1px solid var(--border);background:var(--panel);
+  transition:.3s;position:relative;overflow:hidden;
+}
+.aaa-card:hover{transform:translateY(-5px)}
+.aaa-card:nth-child(1):hover{border-color:var(--cyan);box-shadow:0 12px 40px rgba(34,211,238,.16)}
+.aaa-card:nth-child(2):hover{border-color:var(--violet);box-shadow:0 12px 40px rgba(139,92,246,.16)}
+.aaa-card:nth-child(3):hover{border-color:var(--pink);box-shadow:0 12px 40px rgba(236,72,153,.16)}
+.aaa-icon{font-size:2rem;margin-bottom:12px;display:block}
+.aaa-card h4{margin:0 0 8px;color:var(--txt);font-size:1rem}
+.aaa-card p{font-size:.85rem;margin:0}
+
+/* ============ OWASP ============ */
+.owasp-item{
+  border:1px solid var(--border);border-radius:var(--radius-sm);
+  margin:14px 0;overflow:hidden;background:var(--panel);
+  transition:.3s;
+}
+.owasp-item:hover{border-color:rgba(34,211,238,.28)}
+.owasp-head{
+  display:flex;align-items:center;gap:14px;
+  padding:15px 20px;cursor:pointer;user-select:none;
+  transition:.2s;
+}
+.owasp-head:hover{background:var(--panel-2)}
+.owasp-id{
+  font-family:var(--mono);font-size:.7rem;font-weight:800;
+  padding:4px 9px;border-radius:6px;flex-shrink:0;
+  background:linear-gradient(135deg,rgba(34,211,238,.18),rgba(139,92,246,.18));
+  color:var(--cyan);border:1px solid rgba(34,211,238,.25);
+}
+.owasp-head b{font-size:.92rem;flex:1;font-weight:700}
+.owasp-head .chev{color:var(--dim);transition:.3s;font-size:.8rem}
+.owasp-item.open .chev{transform:rotate(180deg);color:var(--cyan)}
+.owasp-body{
+  max-height:0;overflow:hidden;transition:max-height .38s ease;
+}
+.owasp-item.open .owasp-body{max-height:620px}
+.owasp-body-inner{padding:0 20px 20px;font-size:.88rem}
+.owasp-body-inner p{margin-bottom:10px}
+.owasp-body-inner b{color:var(--cyan);font-weight:700}
+
+/* ============ CHECKLIST ============ */
+.checklist{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(275px,1fr));
+  gap:10px;margin:28px 0;
+}
+.check{
+  display:flex;align-items:flex-start;gap:12px;
+  padding:13px 17px;border-radius:var(--radius-sm);
+  background:var(--panel);border:1px solid var(--border);
+  cursor:pointer;transition:.25s;font-size:.87rem;color:var(--muted);
+  user-select:none;
+}
+.check:hover{border-color:var(--border-hi);background:var(--panel-2)}
+.check input{
+  appearance:none;-webkit-appearance:none;
+  width:19px;height:19px;flex-shrink:0;margin-top:1px;
+  border:2px solid rgba(255,255,255,.2);border-radius:5px;
+  cursor:pointer;transition:.22s;position:relative;
+}
+.check input:checked{
+  background:linear-gradient(135deg,var(--cyan),var(--violet));
+  border-color:transparent;
+}
+.check input:checked::after{
+  content:'✓';position:absolute;inset:0;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.72rem;font-weight:900;color:#04050a;
+}
+.check input:checked ~ span{color:var(--dim);text-decoration:line-through}
+
+/* ============ TIMELINE ============ */
+.timeline{position:relative;margin:50px 0 20px;padding-left:0}
+.timeline::before{
+  content:'';position:absolute;left:50%;top:0;bottom:0;width:2px;
+  transform:translateX(-50%);
+  background:linear-gradient(180deg,transparent,var(--cyan),var(--violet),var(--pink),transparent);
+  opacity:.5;
+}
+.tl-item{
+  position:relative;width:50%;padding:0 44px 44px 0;
+  opacity:0;transform:translateY(28px);
+  transition:opacity .7s ease,transform .7s ease;
+}
+.tl-item.show{opacity:1;transform:translateY(0)}
+.tl-item:nth-child(even){
+  margin-left:50%;padding:0 0 44px 44px;text-align:left;
+}
+.tl-item:nth-child(odd){text-align:right}
+.tl-dot{
+  position:absolute;top:6px;width:15px;height:15px;border-radius:50%;
+  background:var(--bg);border:2px solid var(--cyan);
+  box-shadow:0 0 0 4px rgba(34,211,238,.12),0 0 18px rgba(34,211,238,.55);
+  z-index:2;
+}
+.tl-item:nth-child(odd) .tl-dot{right:-8px}
+.tl-item:nth-child(even) .tl-dot{left:-8px}
+.tl-item:nth-child(4n+1) .tl-dot{border-color:var(--cyan);box-shadow:0 0 0 4px rgba(34,211,238,.12),0 0 18px rgba(34,211,238,.5)}
+.tl-item:nth-child(4n+2) .tl-dot{border-color:var(--violet);box-shadow:0 0 0 4px rgba(139,92,246,.12),0 0 18px rgba(139,92,246,.5)}
+.tl-item:nth-child(4n+3) .tl-dot{border-color:var(--pink);box-shadow:0 0 0 4px rgba(236,72,153,.12),0 0 18px rgba(236,72,153,.5)}
+.tl-item:nth-child(4n+4) .tl-dot{border-color:var(--green);box-shadow:0 0 0 4px rgba(34,197,94,.12),0 0 18px rgba(34,197,94,.5)}
+
+.tl-year{
+  font-family:var(--mono);font-size:.75rem;font-weight:800;
+  color:var(--cyan);letter-spacing:1.6px;margin-bottom:7px;
+}
+.tl-card{
+  display:inline-block;text-align:left;
+  background:var(--panel);border:1px solid var(--border);
+  border-radius:var(--radius-sm);padding:16px 20px;
+  transition:.3s;max-width:100%;
+}
+.tl-card:hover{border-color:var(--border-hi);background:var(--panel-2);transform:translateY(-3px)}
+.tl-card b{display:block;font-size:.92rem;color:var(--txt);margin-bottom:5px;font-weight:700}
+.tl-card span{font-size:.82rem;color:var(--muted);line-height:1.6}
+
+/* ============ REVEAL ============ */
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .7s cubic-bezier(.2,.7,.3,1),transform .7s cubic-bezier(.2,.7,.3,1)}
+.reveal.show{opacity:1;transform:none}
+
+/* ============ FINAL ============ */
+.final-quote{
+  text-align:center;padding:56px 34px;
+  border-radius:var(--radius);
+  background:linear-gradient(135deg,rgba(34,211,238,.09),rgba(139,92,246,.09),rgba(236,72,153,.07));
+  border:1px solid rgba(34,211,238,.24);
+  position:relative;overflow:hidden;
+}
+.final-quote::before{
+  content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;
+  background:conic-gradient(from 0deg,transparent,rgba(34,211,238,.1),transparent 30%);
+  animation:spin 12s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+.final-quote p{
+  position:relative;z-index:2;
+  font-size:clamp(1.05rem,2.3vw,1.5rem);
+  color:#eaf3ff;font-weight:650;line-height:1.6;
+  max-width:840px;margin:0 auto;
+}
+
+.labs{
+  text-align:center;margin-top:44px;
+  font-size:1.05rem;font-weight:800;letter-spacing:.6px;
+}
+.labs span{background:linear-gradient(90deg,var(--cyan),var(--violet),var(--pink));-webkit-background-clip:text;background-clip:text;color:transparent}
+
+/* ============ FOOTER ============ */
+footer{
+  position:relative;z-index:2;
+  border-top:1px solid var(--border);
+  padding:52px 24px 44px;text-align:center;
+  background:rgba(0,0,0,.28);
+}
+.hashtags{
+  display:flex;flex-wrap:wrap;gap:8px;justify-content:center;
+  max-width:900px;margin:0 auto 26px;
+}
+.hashtags span{
+  font-size:.74rem;font-weight:600;color:var(--dim);
+  padding:5px 12px;border-radius:7px;
+  background:var(--panel);border:1px solid var(--border);
+  transition:.25s;
+}
+.hashtags span:hover{color:var(--cyan);border-color:var(--border-hi);transform:translateY(-2px)}
+footer small{color:var(--dim);font-size:.78rem;display:block;line-height:1.9}
+
+/* ============ TOP BTN ============ */
+#top{
+  position:fixed;right:22px;bottom:22px;z-index:800;
+  width:46px;height:46px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,var(--cyan),var(--violet));
+  color:#04050a;font-weight:900;font-size:1.1rem;
+  border:none;cursor:pointer;
+  opacity:0;pointer-events:none;transition:.35s;
+  box-shadow:0 8px 28px rgba(34,211,238,.35);
+}
+#top.show{opacity:1;pointer-events:auto}
+#top:hover{transform:translateY(-4px) scale(1.06)}
+
+/* ============ RESPONSIVE ============ */
+@media(max-width:960px){
+  .hero-grid{grid-template-columns:1fr;gap:44px}
+  .radar-wrap{order:-1;max-width:340px;margin:0 auto}
+  #radar{max-width:340px}
+  .grid-3,.grid-4{grid-template-columns:repeat(2,1fr)}
+  .aaa{grid-template-columns:1fr}
+}
+@media(max-width:680px){
+  .grid-2,.grid-3,.grid-4{grid-template-columns:1fr}
+  section{padding:56px 0}
+  .wrap{padding:0 18px}
+  .hero-stats{gap:24px}
+  .stat b{font-size:1.4rem}
+  .timeline::before{left:9px}
+  .tl-item,.tl-item:nth-child(even){
+    width:100%;margin-left:0;padding:0 0 32px 34px;text-align:left;
+  }
+  .tl-item:nth-child(odd) .tl-dot,
+  .tl-item:nth-child(even) .tl-dot{left:2px;right:auto}
+  .nav-links{display:none}
+  .flow-node{font-size:.72rem;padding:9px 14px}
+}
+</style>
+</head>
+<body>
+
+<div id="progress"></div>
+
+<canvas id="bg-canvas"></canvas>
+<div class="grid-overlay"></div>
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<div class="orb orb-3"></div>
+
+<!-- ================= NAV ================= -->
+<nav>
+  <div class="nav-inner">
+    <div class="brand"><span class="brand-dot"></span><span>XTutiRaiseUP</span></div>
+    <div class="nav-links">
+      <a href="#ai">AI + Dev</a>
+      <a href="#fundamentals">Fundamentals</a>
+      <a href="#authn">Authentication</a>
+      <a href="#authz">Authorization</a>
+      <a href="#oauth">OAuth</a>
+      <a href="#jwt">JWT</a>
+      <a href="#websec">Web Security</a>
+      <a href="#crypto">Encryption</a>
+      <a href="#owasp">OWASP</a>
+      <a href="#zerotrust">Zero Trust</a>
+      <a href="#aisec">AI Security</a>
+      <a href="#cloud">Cloud</a>
+      <a href="#devsecops">DevSecOps</a>
+      <a href="#k8s">Kubernetes</a>
+      <a href="#apisec">API Security</a>
+      <a href="#arch">Architecture</a>
+      <a href="#checklist">Checklist</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ================= HERO ================= -->
+<header class="hero">
+  <div class="hero-grid">
+    <div>
+      <div class="badge">2026 Technology Knowledge Guide</div>
+      <h1 class="hero-title">
+        MODERN SOFTWARE &amp;<br>
+        <span class="grad">CYBERSECURITY</span><br>
+        IN 2026
+      </h1>
+      <p class="hero-sub">
+        The complete developer guide to <strong>AI agents, authentication, authorization,
+        Zero Trust, cloud security, and API security</strong> — written for software engineers,
+        DevOps engineers, architects, and cybersecurity learners.
+      </p>
+      <div class="hero-tags">
+        <span class="tag">AI Coding Agents</span>
+        <span class="tag">Passkeys</span>
+        <span class="tag">OAuth 2.0</span>
+        <span class="tag">OpenID Connect</span>
+        <span class="tag">JWT</span>
+        <span class="tag">Zero Trust</span>
+        <span class="tag">DevSecOps</span>
+        <span class="tag">Kubernetes</span>
+        <span class="tag">Machine Identity</span>
+        <span class="tag">API Security</span>
+      </div>
+      <div class="hero-stats">
+        <div class="stat"><b>22</b><small>Sections</small></div>
+        <div class="stat"><b>10</b><small>OWASP Risks</small></div>
+        <div class="stat"><b>20</b><small>Checklist Items</small></div>
+        <div class="stat"><b>60+</b><small>Years Timeline</small></div>
+      </div>
+    </div>
+    <div class="radar-wrap">
+      <div class="radar-ring"></div>
+      <div class="radar-ring"></div>
+      <div class="radar-ring"></div>
+      <canvas id="radar" width="440" height="440"></canvas>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+<!-- ================= WHY ================= -->
+<section id="why" class="reveal">
+  <div class="sec-num">00 — CONTEXT</div>
+  <h2>Why <span class="accent">Security Is Changing</span> in 2026</h2>
+  <p class="lead">Three forces are reshaping application security. Understanding them is the difference between building software that survives and software that becomes a headline.</p>
+
+  <div class="grid grid-3">
+    <div class="mini">
+      <b>1. AI-Assisted Development at Scale</b>
+      <span>AI agents now generate, review, and deploy code. This accelerates development but introduces new attack surfaces — prompt injection, excessive agent permissions, and AI-generated vulnerabilities.</span>
+    </div>
+    <div class="mini">
+      <b>2. Identity Everywhere</b>
+      <span>Applications no longer serve only humans. They serve services, workloads, bots, and AI agents. Every entity needs an identity, authentication method, and authorization policy.</span>
+    </div>
+    <div class="mini">
+      <b>3. Zero Trust as Default</b>
+      <span>Perimeter security is dead. Modern architectures assume breach, verify everything, and enforce least privilege at every layer.</span>
+    </div>
+  </div>
+
+  <div class="callout">
+    <p>These shifts demand that developers understand security deeply — not as an afterthought, but as a core engineering competency.</p>
+  </div>
+</section>
+
+<!-- ================= TIMELINE ================= -->
+<section id="timeline" class="reveal">
+  <div class="sec-num">00.5 — HISTORY</div>
+  <h2>Data &amp; Security <span class="accent">History Timeline</span></h2>
+  <p class="lead">Six decades of identity, cryptography, and access control — the foundation everything in this guide is built on.</p>
+
+  <div class="timeline">
+    <div class="tl-item"><div class="tl-dot"></div><div class="tl-year">1961</div><div class="tl-card"><b>First Passwords</b><span>MIT's Compatible Time-Sharing System introduces the first computer passwords to separate user sessions.</span></div></div>
+
+    <div class="tl-item"><div class="tl-dot"></div><div class="tl-year">1976</div><div class="tl-card"><b>Public-Key Cryptography</b><span>Diffie &amp; Hellman publish "New Directions in Cryptography" — asymmetric keys become possible.</span></div></div>
+
+    <div class="tl-item"><div class="tl-dot"></div><div class="tl-year">1977</div><div class="tl-card"><b>RSA Algorithm</b><span>Rivest, Shamir and Adleman publish RSA, enabling practical digital signatures and key exchange.</span></div></div>
+
+    <div class="tl-item"><div class="tl-dot"></div><div class="tl-year">1987</div><div class="tl-card"><b>Role-Based Access Control</b><span>RBAC concepts formalized — permissions grouped into roles instead of per-user grants.</span></div></div>
+
+    <div class="tl-item"><div class="tl-dot"></div><div class="tl-year">1994</div><div class="tl-card"><b>Netscape SSL</b><span>SSL 1.0 designed to secure web traffic. HTTPS begins its long journey.</span></div></div>
+
+    <div class="tl-item"><div class="tl-dot"></div><div class="tl-year">1999</div><div class="tl-card"><b>TLS 1.0</b><span>IETF standardizes TLS as the successor to SSL. HTTPS becomes the norm for sensitive sites.</span></div></div>
+
+    <div class="tl-item"><div class="tl-dot"></div><div class="tl-year">2001</div><div class="tl-card"><b>OWASP Founded</b><span>The Open Web Application Security Project begins documenting web application risks.</span></div></div>
+
+    <div class="tl-item"><div class="tl-dot"></div><div class="tl-year">2003</div><div class="tl-card"><b>OWASP Top 10</b><span>The first Top 10 list is published — becoming the industry baseline for web security awareness.</span></div></div>
+
+    <div class="tl-item"><div class="tl-dot"></div><div class="tl-year">2007</div><div class="tl-card"><b>OAuth 1.0</b><span>Delegated authorization arrives, letting apps access resources without storing user passwords.</span></div></div>
+
+    <div class="tl-item"><div class="tl-dot"></div><div class="tl-year">2010</div><div class="tl-card"><b>OWASP ASVS</b><span>Application Security Verification Standard gives teams a measurable security checklist.</span></div></div>
+
+    <div class="tl-item"><div class="tl-dot"></div><div class="tl-year">2012</div><div class="tl-card"><b>OAuth 2.0 (RFC 6749)</b><span>The modern authorization framework is standardized — and still powers most APIs today.</span></div></div>
+
+    <div class="tl-item"><div class="tl-dot"></div><div class="tl-year">2014</div><div class="tl-card"><b>OpenID Connect</b><span>Authentication layered on OAuth 2.0. ID Tokens and standard identity claims arrive.</span></div></div>
+
+    <div class="tl-item"><div class="tl-dot"></div><div class="tl-year">2015</div><div class="tl-card"><b>RFC 7519 — JWT</b><span>JSON Web Tokens standardized. Stateless authentication spreads across microservices.</span></div></div>
+
+    <div class="tl-item"><div class="tl-dot"></div><div class="tl-year">2016</div><div class="tl-card"><b>Zero Trust Popularized</b><span>"Never trust, always verify" moves from research paper to enterprise architecture principle.</span></div></div>
+
+    <div class="tl-item"><div class="tl-dot"></div><div class="tl-year">2018</div><div class="tl-card"><b>WebAuthn / FIDO2</b><span>W3C standardizes WebAuthn. Phishing-resistant passwordless authentication becomes possible on the web.</span></div></div>
+
+    <div class="tl-item"><div class="tl-dot"></div><div class="tl-year">2020</div><div class="tl-card"><b>Argon2 &amp; Modern Hashing</b><span>Argon2, bcrypt and scrypt become the accepted standard for password hashing.</span></div></div>
+
+    <div class="tl-item"><div class="tl-dot"></div><div class="tl-year">2022</div><div class="tl-card"><b>Passkeys Go Mainstream</b><span>Apple, Google and Microsoft announce passkey support across their platforms.</span></div></div>
+
+    <div class="tl-item"><div class="tl-dot"></div><div class="tl-year">2023</div><div class="tl-card"><b>AI Coding Copilots</b><span>AI-assisted coding becomes standard in the developer workflow. Security teams start asking new questions.</span></div></div>
+
+    <div class="tl-item"><div class="tl-dot"></div><div class="tl-year">2024</div><div class="tl-card"><b>AI Agents in the SDLC</b><span>Agents begin writing code, opening pull requests and running tests autonomously.</span></div></div>
+
+    <div class="tl-item"><div class="tl-dot"></div><div class="tl-year">2025</div><div class="tl-card"><b>Agentic Software Engineering</b><span>Multi-agent systems coordinate across coding, testing, review and deployment.</span></div></div>
+
+    <div class="tl-item"><div class="tl-dot"></div><div class="tl-year">2026</div><div class="tl-card"><b>AI Agent Security + Machine Identity</b><span>Identity, least privilege and auditing extend to non-human actors at scale.</span></div></div>
+  </div>
+</section>
+
+<!-- ================= 1. AI ================= -->
+<section id="ai" class="reveal">
+  <div class="sec-num">01 — AI + SOFTWARE DEVELOPMENT</div>
+  <h2>AI + <span class="accent">Software Development</span></h2>
+
+  <h3>The New Developer Workflow</h3>
+  <p>Traditional development followed a linear path: <strong>Write → Test → Review → Deploy</strong>.</p>
+  <p>Modern AI-assisted development follows an iterative loop:</p>
+
+  <div class="flow">
+    <div class="flow-node hi">Prompt</div><div class="flow-arrow">↓</div>
+    <div class="flow-node">Generate</div><div class="flow-arrow">↓</div>
+    <div class="flow-node">Review</div><div class="flow-arrow">↓</div>
+    <div class="flow-node">Test</div><div class="flow-arrow">↓</div>
+    <div class="flow-node">Fix</div><div class="flow-arrow">↓</div>
+    <div class="flow-node">PR</div><div class="flow-arrow">↓</div>
+    <div class="flow-node hi">Deploy</div>
+  </div>
+
+  <p>AI agents now participate at every stage.</p>
+
+  <h3>AI Coding Agents vs AI Copilots</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Aspect</th><th>AI Copilot</th><th>AI Agent</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Role</strong></td><td>Assists developer</td><td>Acts autonomously</td></tr>
+        <tr><td><strong>Scope</strong></td><td>Suggests code</td><td>Writes, tests, deploys</td></tr>
+        <tr><td><strong>Control</strong></td><td>Human-in-the-loop</td><td>Human-on-the-loop</td></tr>
+        <tr><td><strong>Example</strong></td><td>GitHub Copilot</td><td>Claude Code, OpenAI Codex</td></tr>
+        <tr><td><strong>Risk Level</strong></td><td>Lower</td><td>Higher (requires guardrails)</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="callout"><p><strong>Copilots suggest. Agents execute.</strong> Copilots complete your function. Agents can create entire features, run tests, fix bugs, and open pull requests — often with minimal human intervention.</p></div>
+
+  <h3>Agentic Software Engineering</h3>
+  <p>Agentic engineering means AI systems that can:</p>
+  <div class="grid grid-2">
+    <div class="mini"><b>Understand requirements</b><span>Parse natural language into implementation intent.</span></div>
+    <div class="mini"><b>Plan multi-step strategies</b><span>Break work into ordered, verifiable tasks.</span></div>
+    <div class="mini"><b>Write and modify code</b><span>Operate across multiple files and modules.</span></div>
+    <div class="mini"><b>Run and interpret tests</b><span>Execute suites and read failures.</span></div>
+    <div class="mini"><b>Debug and iterate</b><span>Autonomously fix and re-verify.</span></div>
+    <div class="mini"><b>Create pull requests</b><span>With explanations and change summaries.</span></div>
+  </div>
+  <p><strong>Claude Code</strong> and <strong>OpenAI Codex</strong> represent this shift — agents that operate within your codebase, respect context, and execute complex tasks.</p>
+
+  <h3>AI-Native Development</h3>
+  <p>AI-native development treats AI as a first-class collaborator:</p>
+  <div class="grid grid-3">
+    <div class="mini"><b>Code generation</b><span>From specifications and intent.</span></div>
+    <div class="mini"><b>Automated code review</b><span>Style, security, and logic checks.</span></div>
+    <div class="mini"><b>Intelligent debugging</b><span>Root cause analysis from traces.</span></div>
+    <div class="mini"><b>Test generation</b><span>Based on real code paths.</span></div>
+    <div class="mini"><b>Documentation</b><span>Written alongside code changes.</span></div>
+    <div class="mini"><b>Refactoring</b><span>Large-scale, guided transformations.</span></div>
+  </div>
+  <p>This isn't about replacing developers. It's about amplifying their capability.</p>
+
+  <h3>Multi-Agent Software Development</h3>
+  <p>Complex projects now use multiple specialized agents:</p>
+  <div class="flow-row">
+    <div class="flow-node hi">Architect Agent</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node">Implementation Agent</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node">Test Agent</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node">Security Agent</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node hi">Review Agent</div>
+  </div>
+  <p>These agents coordinate, hand off work, and escalate to humans when needed.</p>
+  <div class="callout warn"><p><strong>Key insight:</strong> Multi-agent systems require clear boundaries, permissions, and audit trails.</p></div>
+
+  <h3>Where AI Agents Help Most</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Phase</th><th>AI Agent Role</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Coding</strong></td><td>Generate boilerplate, implement patterns</td></tr>
+        <tr><td><strong>Testing</strong></td><td>Write unit tests, generate edge cases</td></tr>
+        <tr><td><strong>Debugging</strong></td><td>Analyze stack traces, suggest fixes</td></tr>
+        <tr><td><strong>Review</strong></td><td>Flag security issues, style violations</td></tr>
+        <tr><td><strong>Deployment</strong></td><td>Generate IaC, validate configurations</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>AI Agent Permissions &amp; Security</h3>
+  <p>Giving an AI agent unrestricted access is dangerous.</p>
+  <div class="grid grid-2">
+    <div class="mini"><b>Risks</b><span>Agent reads sensitive data it shouldn't see. Agent modifies production without approval. Agent leaks secrets through generated code. Agent is manipulated via prompt injection.</span></div>
+    <div class="mini"><b>Mitigations</b><span>Scope agent permissions to specific repositories. Require human approval for production changes. Audit all agent actions. Sandbox execution environments. Never give agents long-lived credentials.</span></div>
+  </div>
+
+  <h3>Why Developers Still Need Fundamentals</h3>
+  <p>AI can generate code. It cannot:</p>
+  <div class="grid grid-2">
+    <div class="mini"><b>Understand business context</b><span>and real trade-offs.</span></div>
+    <div class="mini"><b>Design systems</b><span>for scale and resilience.</span></div>
+    <div class="mini"><b>Identify subtle security flaws</b><span>that pass review.</span></div>
+    <div class="mini"><b>Make architectural decisions</b><span>with long-term consequences.</span></div>
+  </div>
+  <div class="callout ok"><p><strong>AI amplifies skill. It does not replace judgment.</strong> The developer who understands authentication, authorization, data modeling, and system design will always outperform one who only prompts.</p></div>
+</section>
+
+<!-- ================= 2. FUNDAMENTALS ================= -->
+<section id="fundamentals" class="reveal">
+  <div class="sec-num">02 — CYBERSECURITY FUNDAMENTALS</div>
+  <h2>Cybersecurity <span class="accent">Fundamentals</span></h2>
+
+  <h3>The AAA Framework</h3>
+  <div class="aaa">
+    <div class="aaa-card">
+      <span class="aaa-icon">🔐</span>
+      <h4>Authentication</h4>
+      <p><strong>Who are you?</strong><br>Verifying identity. Proving you are who you claim to be.</p>
+    </div>
+    <div class="aaa-card">
+      <span class="aaa-icon">🛂</span>
+      <h4>Authorization</h4>
+      <p><strong>What can you do?</strong><br>Determining permissions. What resources and actions are allowed?</p>
+    </div>
+    <div class="aaa-card">
+      <span class="aaa-icon">📋</span>
+      <h4>Accounting</h4>
+      <p><strong>What did you do?</strong><br>Logging and auditing for compliance, debugging, and incident response.</p>
+    </div>
+  </div>
+
+  <h3>Core Security Concepts</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Concept</th><th>Definition</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Identity</strong></td><td>A representation of an entity (user, service, device)</td></tr>
+        <tr><td><strong>Access Control</strong></td><td>Mechanisms that enforce authorization decisions</td></tr>
+        <tr><td><strong>Least Privilege</strong></td><td>Granting minimum permissions necessary</td></tr>
+        <tr><td><strong>Security Evaluation</strong></td><td>Assessing systems for vulnerabilities and risks</td></tr>
+        <tr><td><strong>Risk Assessment</strong></td><td>Identifying, analyzing, and prioritizing risks</td></tr>
+        <tr><td><strong>Vulnerability Management</strong></td><td>Continuously identifying and remediating weaknesses</td></tr>
+        <tr><td><strong>Threat Detection</strong></td><td>Identifying malicious activity</td></tr>
+        <tr><td><strong>Incident Response</strong></td><td>Reacting to and recovering from security events</td></tr>
+        <tr><td><strong>Security Monitoring</strong></td><td>Continuous observation of system behavior</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout">
+    <p><strong>Why AAA matters:</strong> Every security decision flows from these three questions — Can I trust this identity? Should this identity access this resource? Can I prove what happened? Get these wrong, and everything else fails.</p>
+  </div>
+</section>
+
+<!-- ================= 3. AUTHENTICATION ================= -->
+<section id="authn" class="reveal">
+  <div class="sec-num">03 — MODERN AUTHENTICATION</div>
+  <h2>Modern <span class="accent">Authentication</span></h2>
+
+  <h3>Authentication Methods Compared</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Method</th><th>How It Works</th><th>Security</th><th>User Experience</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Password</strong></td><td>Shared secret</td><td>Low</td><td>Familiar but friction-heavy</td></tr>
+        <tr><td><strong>OTP</strong></td><td>One-time code via SMS/email/app</td><td>Medium</td><td>Adds step, SMS is weak</td></tr>
+        <tr><td><strong>MFA</strong></td><td>Multiple factors combined</td><td>High</td><td>Slightly more friction</td></tr>
+        <tr><td><strong>Biometrics</strong></td><td>Fingerprint, face, voice</td><td>High</td><td>Seamless on devices</td></tr>
+        <tr><td><strong>SSO</strong></td><td>Single login for multiple apps</td><td>High</td><td>Excellent</td></tr>
+        <tr><td><strong>Passwordless</strong></td><td>No password required</td><td>High</td><td>Modern, seamless</td></tr>
+        <tr><td><strong>Passkeys</strong></td><td>FIDO2 / WebAuthn credentials</td><td>Very High</td><td>Best UX + security</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Password vs OTP vs MFA vs Passkeys</h3>
+  <div class="grid grid-2">
+    <div class="mini"><b>Password</b><span>Something you know. Vulnerable to phishing, reuse, brute force. Requires hashing, salting, complexity rules.</span></div>
+    <div class="mini"><b>OTP</b><span>Something you have (temporarily). SMS OTP is vulnerable to SIM swapping. App-based (TOTP) is stronger.</span></div>
+    <div class="mini"><b>MFA</b><span>Combines multiple factors. Something you know + something you have. Significantly reduces account takeover.</span></div>
+    <div class="mini"><b>Passkeys</b><span>Based on FIDO2/WebAuthn. Private key stored on device, never transmitted. Phishing-resistant by design.</span></div>
+  </div>
+
+  <h3>Why Passwordless Is the Future</h3>
+  <p>Passwords are reused across services, phished easily, stored insecurely, and forgotten constantly.</p>
+  <p>Passkeys solve these problems:</p>
+  <div class="grid grid-2">
+    <div class="mini"><b>Phishing-resistant</b><span>No secret to steal.</span></div>
+    <div class="mini"><b>No reuse</b><span>Unique per service.</span></div>
+    <div class="mini"><b>No breach risk</b><span>Private key never leaves the device.</span></div>
+    <div class="mini"><b>Better UX</b><span>Biometric or PIN unlock.</span></div>
+  </div>
+  <p>Major platforms (Apple, Google, Microsoft) now support passkeys natively.</p>
+
+  <h3>FIDO2, WebAuthn, and Security Keys</h3>
+  <p><strong>FIDO2</strong> is the standard for passwordless authentication. <strong>WebAuthn</strong> is the web API implementing FIDO2. <strong>Security keys</strong> (hardware tokens) provide the highest assurance — physical possession required.</p>
+
+  <div class="flow">
+    <div class="flow-node">1. User registers device with service</div><div class="flow-arrow">↓</div>
+    <div class="flow-node">2. Service stores public key</div><div class="flow-arrow">↓</div>
+    <div class="flow-node">3. User signs challenge with private key</div><div class="flow-arrow">↓</div>
+    <div class="flow-node hi">4. Service verifies signature</div>
+  </div>
+  <p>No shared secret. No phishing risk.</p>
+
+  <h3>Device Authentication</h3>
+  <p>Devices can also be authenticated: device certificates, TPM-backed keys, device fingerprinting, MDM enrollment. This enables <em>device-aware access</em> — only trusted devices can access sensitive resources.</p>
+</section>
+
+<!-- ================= 4. AUTHORIZATION ================= -->
+<section id="authz" class="reveal">
+  <div class="sec-num">04 — AUTHORIZATION MODELS</div>
+  <h2>Authorization <span class="accent">Models</span></h2>
+  <p class="lead">Authorization determines what an authenticated identity can do.</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Model</th><th>How It Works</th><th>Example</th><th>Best Use Case</th></tr></thead>
+      <tbody>
+        <tr><td><strong>RBAC</strong></td><td>Roles assigned permissions</td><td>Admin, Editor, Viewer</td><td>Simple hierarchies</td></tr>
+        <tr><td><strong>ABAC</strong></td><td>Attributes determine access</td><td>Department = Finance AND Clearance ≥ 3</td><td>Complex, dynamic rules</td></tr>
+        <tr><td><strong>PBAC</strong></td><td>Policies define access</td><td>"Managers can approve expenses &lt; $5000"</td><td>Business rule-heavy systems</td></tr>
+        <tr><td><strong>ReBAC</strong></td><td>Relationships define access</td><td>"User is member of Team X"</td><td>Social, collaborative apps</td></tr>
+        <tr><td><strong>ACL</strong></td><td>Per-resource permission lists</td><td>File shared with specific users</td><td>Document management</td></tr>
+        <tr><td><strong>Resource-based</strong></td><td>Permissions tied to resource</td><td>S3 bucket policies</td><td>Cloud resources</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>RBAC (Role-Based Access Control)</h3>
+  <p>Users are assigned roles. Roles have permissions.</p>
+  <div class="flow-row">
+    <div class="flow-node">User</div><div class="flow-arrow">→</div>
+    <div class="flow-node">Role</div><div class="flow-arrow">→</div>
+    <div class="flow-node">Permissions</div><div class="flow-arrow">→</div>
+    <div class="flow-node hi">Resources</div>
+  </div>
+  <p><strong>Example:</strong> Alice has role "Editor". Editor can read, write, update articles. Therefore Alice can edit articles.</p>
+  <p><strong>Pros:</strong> Simple, scalable for basic hierarchies. <strong>Cons:</strong> Role explosion in complex systems.</p>
+
+  <h3>ABAC (Attribute-Based Access Control)</h3>
+  <p>Access decisions based on attributes of user, resource, action, and environment.</p>
+<pre>IF user.department == "Finance"
+AND resource.classification &lt;= "Confidential"
+AND time.hour BETWEEN 9 AND 17
+THEN allow access</pre>
+  <p><strong>Pros:</strong> Highly flexible, context-aware. <strong>Cons:</strong> Complex to manage.</p>
+
+  <h3>PBAC (Policy-Based Access Control)</h3>
+  <p>Centralized policies define access rules.</p>
+<pre>{
+  "effect": "allow",
+  "action": "read",
+  "resource": "document:*",
+  "condition": {
+    "user.clearance": { "gte": 3 }
+  }
+}</pre>
+
+  <h3>ReBAC (Relationship-Based Access Control)</h3>
+  <p>Access based on relationships between entities. Used by Google (Zanzibar) and in collaborative apps.</p>
+  <p><strong>Example:</strong> User is member of Project X. Project X has document Y. Therefore, user can access document Y.</p>
+
+  <h3>Least Privilege</h3>
+  <div class="callout ok">
+    <p><strong>Principle:</strong> Grant only the minimum permissions necessary. Start with no access, add permissions explicitly, review regularly, remove unused permissions. <strong>Why it matters:</strong> It limits the blast radius of compromised accounts.</p>
+  </div>
+</section>
+
+<!-- ================= 5. OAUTH ================= -->
+<section id="oauth" class="reveal">
+  <div class="sec-num">05 — OAUTH + IDENTITY</div>
+  <h2>OAuth 2.0 + <span class="accent">OpenID Connect</span></h2>
+
+  <h3>OAuth 2.0 Overview</h3>
+  <p>OAuth 2.0 is an <em>authorization</em> framework. It allows applications to access resources on behalf of users without exposing credentials.</p>
+  <div class="grid grid-4">
+    <div class="mini"><b>Resource Owner</b><span>The user</span></div>
+    <div class="mini"><b>Client</b><span>The application requesting access</span></div>
+    <div class="mini"><b>Authorization Server</b><span>Issues tokens</span></div>
+    <div class="mini"><b>Resource Server</b><span>Hosts protected resources</span></div>
+  </div>
+
+  <h3>OpenID Connect (OIDC)</h3>
+  <p>OIDC is an <em>authentication</em> layer built on OAuth 2.0. It adds:</p>
+  <div class="grid grid-3">
+    <div class="mini"><b>ID Token</b><span>JWT containing user identity</span></div>
+    <div class="mini"><b>UserInfo endpoint</b><span>Standard profile retrieval</span></div>
+    <div class="mini"><b>Standard claims</b><span>name, email, picture, etc.</span></div>
+  </div>
+  <div class="callout">
+    <p><strong>OAuth = Authorization</strong> &nbsp;|&nbsp; <strong>OpenID Connect = Authentication / Identity</strong></p>
+  </div>
+
+  <h3>Authorization Code Flow with PKCE</h3>
+  <p>The most secure flow for web and mobile apps.</p>
+  <div class="flow">
+    <div class="flow-node">User</div><div class="flow-arrow">↓</div>
+    <div class="flow-node">Application</div><div class="flow-arrow">↓</div>
+    <div class="flow-node">Identity Provider</div><div class="flow-arrow">↓</div>
+    <div class="flow-node">Authorization Code</div><div class="flow-arrow">↓</div>
+    <div class="flow-node">Token</div><div class="flow-arrow">↓</div>
+    <div class="flow-node">API</div><div class="flow-arrow">↓</div>
+    <div class="flow-node hi">Protected Resource</div>
+  </div>
+
+  <p><strong>Steps:</strong></p>
+  <div class="grid grid-2">
+    <div class="mini"><b>1</b><span>App redirects user to IdP with code challenge</span></div>
+    <div class="mini"><b>2</b><span>User authenticates</span></div>
+    <div class="mini"><b>3</b><span>IdP returns authorization code</span></div>
+    <div class="mini"><b>4</b><span>App exchanges code + verifier for tokens</span></div>
+    <div class="mini"><b>5</b><span>App uses access token to call APIs</span></div>
+  </div>
+  <p><strong>PKCE</strong> (Proof Key for Code Exchange) prevents code interception attacks.</p>
+
+  <h3>Other Flows</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Flow</th><th>Use Case</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Client Credentials</strong></td><td>Service-to-service (no user)</td></tr>
+        <tr><td><strong>Device Authorization</strong></td><td>Smart TVs, CLI tools</td></tr>
+        <tr><td><strong>Refresh Token</strong></td><td>Get new access tokens without re-auth</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Tokens Explained</h3>
+  <div class="grid grid-3">
+    <div class="mini"><b>Access Token</b><span>Authorizes API requests</span></div>
+    <div class="mini"><b>Refresh Token</b><span>Obtains new access tokens</span></div>
+    <div class="mini"><b>ID Token</b><span>Contains user identity (OIDC)</span></div>
+  </div>
+
+  <h3>Scopes and Consent</h3>
+  <p><strong>Scopes</strong> define what access is requested: <code>read:profile</code>, <code>write:posts</code>, <code>admin:users</code>. <strong>Consent</strong> is user approval for requested scopes. Best practice: request minimal scopes, explain why.</p>
+</section>
+
+<!-- ================= 6. JWT ================= -->
+<section id="jwt" class="reveal">
+  <div class="sec-num">06 — JWT + TOKENS</div>
+  <h2>JWT + <span class="accent">Tokens</span></h2>
+
+  <h3>JWT Structure</h3>
+  <p>A JWT has three parts, base64-encoded and dot-separated:</p>
+<pre>header.payload.signature</pre>
+
+  <h4>Header</h4>
+<pre>{ "alg": "RS256", "typ": "JWT" }</pre>
+
+  <h4>Payload</h4>
+<pre>{ "sub": "user123", "role": "admin", "exp": 1735689600 }</pre>
+
+  <h4>Signature</h4>
+<pre>RSASHA256(base64(header) + "." + base64(payload), privateKey)</pre>
+
+  <h3>When JWT Is Useful</h3>
+  <div class="grid grid-2">
+    <div class="mini"><b>Stateless authentication</b><span>No server-side session store.</span></div>
+    <div class="mini"><b>API authorization</b><span>Carry claims directly in the token.</span></div>
+    <div class="mini"><b>Single sign-on</b><span>Across multiple services.</span></div>
+    <div class="mini"><b>Microservices</b><span>Service-to-service communication.</span></div>
+  </div>
+
+  <h3>Common JWT Mistakes</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Mistake</th><th>Risk</th><th>Fix</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Not validating signature</strong></td><td>Token forgery</td><td>Always verify signature</td></tr>
+        <tr><td><strong>Ignoring expiration</strong></td><td>Replay attacks</td><td>Check <code>exp</code> claim</td></tr>
+        <tr><td><strong>Using <code>alg: none</code></strong></td><td>No security</td><td>Reject unsigned tokens</td></tr>
+        <tr><td><strong>Storing in localStorage</strong></td><td>XSS theft</td><td>Use httpOnly cookies</td></tr>
+        <tr><td><strong>Long-lived tokens</strong></td><td>Extended compromise</td><td>Short expiry + refresh</td></tr>
+        <tr><td><strong>Secrets in payload</strong></td><td>Data exposure</td><td>Payload is readable</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Token Best Practices</h3>
+  <div class="grid grid-2">
+    <div class="mini"><b>Access tokens</b><span>Short-lived (5–15 min)</span></div>
+    <div class="mini"><b>Refresh tokens</b><span>Longer-lived, rotated</span></div>
+    <div class="mini"><b>Storage</b><span>httpOnly, Secure, SameSite cookies</span></div>
+    <div class="mini"><b>Rotation</b><span>Issue new refresh token on use</span></div>
+    <div class="mini"><b>Revocation</b><span>Maintain blocklist for compromised tokens</span></div>
+    <div class="mini"><b>Validation</b><span>Verify signature, issuer, audience, expiry</span></div>
+  </div>
+</section>
+
+<!-- ================= 7. WEB SECURITY ================= -->
+<section id="websec" class="reveal">
+  <div class="sec-num">07 — WEB &amp; API SECURITY</div>
+  <h2>Web &amp; <span class="accent">API Security</span></h2>
+
+  <h3>HTTPS and TLS</h3>
+  <p><strong>HTTP</strong> transmits data in plaintext. <strong>HTTPS</strong> encrypts data using TLS. <strong>Always use HTTPS. No exceptions.</strong></p>
+  <div class="grid grid-3">
+    <div class="mini"><b>Encryption</b><span>Confidentiality</span></div>
+    <div class="mini"><b>Integrity</b><span>Tamper detection</span></div>
+    <div class="mini"><b>Authentication</b><span>Server identity</span></div>
+  </div>
+
+  <h3>Cookies vs Sessions vs JWT</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Mechanism</th><th>Storage</th><th>Use Case</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Cookies</strong></td><td>Browser</td><td>Session IDs, preferences</td></tr>
+        <tr><td><strong>Sessions</strong></td><td>Server</td><td>Traditional auth</td></tr>
+        <tr><td><strong>JWT</strong></td><td>Client</td><td>Stateless auth, APIs</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Common Web Attacks</h3>
+
+  <div class="card">
+    <h4>CORS (Cross-Origin Resource Sharing)</h4>
+    <p>Controls which origins can access your API from browsers. <strong>Misconfiguration risk:</strong> <code>Access-Control-Allow-Origin: *</code> with credentials. <strong>Fix:</strong> Explicitly list allowed origins.</p>
+  </div>
+
+  <div class="card">
+    <h4>CSRF (Cross-Site Request Forgery)</h4>
+    <p>Attacker tricks user's browser into making requests. <strong>Prevention:</strong> CSRF tokens, SameSite cookies, origin validation.</p>
+  </div>
+
+  <div class="card">
+    <h4>XSS (Cross-Site Scripting)</h4>
+    <p>Attacker injects malicious scripts. <strong>Types:</strong> Stored, Reflected, DOM-based. <strong>Prevention:</strong> Output encoding, Content-Security-Policy, input validation, framework auto-escaping.</p>
+  </div>
+
+  <div class="card">
+    <h4>SQL Injection</h4>
+    <p>Attacker injects SQL via user input.</p>
+<pre>SELECT * FROM users WHERE name = '${input}'</pre>
+    <p>Input: <code>' OR '1'='1</code> — <strong>Prevention:</strong> Parameterized queries, ORMs, input validation.</p>
+  </div>
+
+  <div class="card">
+    <h4>SSRF (Server-Side Request Forgery)</h4>
+    <p>Attacker tricks server into making requests to internal resources. <strong>Prevention:</strong> Allowlist destinations, block internal IPs, validate URLs.</p>
+  </div>
+
+  <div class="card">
+    <h4>Clickjacking</h4>
+    <p>Attacker embeds your site in an iframe to trick clicks. <strong>Prevention:</strong> <code>X-Frame-Options: DENY</code>, <code>Content-Security-Policy: frame-ancestors 'none'</code>.</p>
+  </div>
+
+  <h3>API Security Essentials</h3>
+  <div class="grid grid-3">
+    <div class="mini"><b>Authentication</b><span>Verify identity</span></div>
+    <div class="mini"><b>Authorization</b><span>Check permissions per endpoint</span></div>
+    <div class="mini"><b>Rate limiting</b><span>Prevent abuse</span></div>
+    <div class="mini"><b>Input validation</b><span>Reject malformed data</span></div>
+    <div class="mini"><b>Output encoding</b><span>Prevent injection</span></div>
+    <div class="mini"><b>Secure errors</b><span>Don't leak internals</span></div>
+  </div>
+</section>
+
+<!-- ================= 8. HEADERS ================= -->
+<section id="headers" class="reveal">
+  <div class="sec-num">08 — SECURITY HEADERS</div>
+  <h2>Security <span class="accent">Headers</span></h2>
+  <p class="lead">Purpose → Threat → Example → Developer action.</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Header</th><th>Purpose</th><th>Threat</th><th>Example</th><th>Developer Action</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Content-Security-Policy</strong></td><td>Restrict resource loading</td><td>XSS</td><td><code>default-src 'self'</code></td><td>Define strict policy</td></tr>
+        <tr><td><strong>Strict-Transport-Security</strong></td><td>Force HTTPS</td><td>Downgrade attacks</td><td><code>max-age=31536000</code></td><td>Enable with long max-age</td></tr>
+        <tr><td><strong>X-Frame-Options</strong></td><td>Prevent framing</td><td>Clickjacking</td><td><code>DENY</code></td><td>Set to DENY or SAMEORIGIN</td></tr>
+        <tr><td><strong>X-Content-Type-Options</strong></td><td>Prevent MIME sniffing</td><td>Content injection</td><td><code>nosniff</code></td><td>Always set</td></tr>
+        <tr><td><strong>Referrer-Policy</strong></td><td>Control referrer info</td><td>Info leakage</td><td><code>strict-origin-when-cross-origin</code></td><td>Set appropriate policy</td></tr>
+        <tr><td><strong>Permissions-Policy</strong></td><td>Restrict browser features</td><td>Feature abuse</td><td><code>geolocation=()</code></td><td>Disable unused features</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ================= 9. CRYPTO ================= -->
+<section id="crypto" class="reveal">
+  <div class="sec-num">09 — ENCRYPTION &amp; PASSWORD SECURITY</div>
+  <h2>Encryption &amp; <span class="accent">Password Security</span></h2>
+
+  <h3>Encryption vs Hashing vs Encoding</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Operation</th><th>Reversible?</th><th>Purpose</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Encryption</strong></td><td>Yes (with key)</td><td>Confidentiality</td></tr>
+        <tr><td><strong>Hashing</strong></td><td>No</td><td>Integrity, password storage</td></tr>
+        <tr><td><strong>Encoding</strong></td><td>Yes (trivially)</td><td>Data format conversion</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Symmetric vs Asymmetric Encryption</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Type</th><th>Key</th><th>Example</th><th>Use Case</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Symmetric</strong></td><td>Same key</td><td>AES</td><td>Data at rest, bulk encryption</td></tr>
+        <tr><td><strong>Asymmetric</strong></td><td>Public/private pair</td><td>RSA, ECC</td><td>Key exchange, signatures</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Digital Signatures, TLS &amp; PKI</h3>
+  <p>Sign with private key, verify with public key. Provides <strong>authenticity</strong>, <strong>integrity</strong>, and <strong>non-repudiation</strong>.</p>
+  <p><strong>TLS</strong> uses asymmetric crypto to establish symmetric session keys. <strong>PKI</strong> (Public Key Infrastructure) manages certificates and trust. <strong>Certificates</strong> bind public keys to identities, signed by CAs.</p>
+
+  <h3>Why Passwords Should Be Hashed, Not Encrypted</h3>
+  <div class="callout danger">
+    <p><strong>Encryption is reversible.</strong> If the key leaks, every password is exposed. <strong>Hashing is one-way.</strong> Even with the hash, you can't recover the password.</p>
+  </div>
+  <div class="grid grid-2">
+    <div class="mini"><b>bcrypt</b><span>Adaptive, widely used, tunable cost factor.</span></div>
+    <div class="mini"><b>Argon2</b><span>Winner of the Password Hashing Competition. Memory-hard.</span></div>
+  </div>
+  <div class="callout warn"><p><strong>Never use</strong> MD5, SHA-1, or SHA-256 alone for passwords.</p></div>
+
+  <h3>Secrets Management</h3>
+  <p>Never hardcode secrets. Use environment variables, secret managers (Vault, AWS Secrets Manager), or encrypted Kubernetes secrets. Rotate secrets regularly. Audit access.</p>
+</section>
+
+<!-- ================= 10. OWASP ================= -->
+<section id="owasp" class="reveal">
+  <div class="sec-num">10 — OWASP TOP 10</div>
+  <h2>OWASP Top 10 — <span class="accent">Developer Perspective</span></h2>
+  <p class="lead">Click each item to expand: what it means, a simple example, why it happens, and how to prevent it.</p>
+
+  <div class="owasp-item">
+    <div class="owasp-head"><span class="owasp-id">A01</span><b>Broken Access Control</b><span class="chev">▼</span></div>
+    <div class="owasp-body"><div class="owasp-body-inner">
+      <p><b>What:</b> Users can access resources they shouldn't.</p>
+      <p><b>Example:</b> Changing <code>/user/123</code> to <code>/user/124</code> exposes another user's data.</p>
+      <p><b>Why:</b> Missing server-side authorization checks.</p>
+      <p><b>Prevention:</b> Enforce authorization server-side. Deny by default.</p>
+    </div></div>
+  </div>
+
+  <div class="owasp-item">
+    <div class="owasp-head"><span class="owasp-id">A02</span><b>Cryptographic Failures</b><span class="chev">▼</span></div>
+    <div class="owasp-body"><div class="owasp-body-inner">
+      <p><b>What:</b> Weak or missing encryption.</p>
+      <p><b>Example:</b> Storing passwords in plaintext.</p>
+      <p><b>Why:</b> Misunderstanding crypto, legacy systems.</p>
+      <p><b>Prevention:</b> Use strong algorithms. Hash passwords. Encrypt sensitive data.</p>
+    </div></div>
+  </div>
+
+  <div class="owasp-item">
+    <div class="owasp-head"><span class="owasp-id">A03</span><b>Injection</b><span class="chev">▼</span></div>
+    <div class="owasp-body"><div class="owasp-body-inner">
+      <p><b>What:</b> Untrusted data interpreted as code.</p>
+      <p><b>Example:</b> SQL injection, command injection.</p>
+      <p><b>Why:</b> Concatenating user input into queries.</p>
+      <p><b>Prevention:</b> Parameterized queries. Input validation. Least privilege.</p>
+    </div></div>
+  </div>
+
+  <div class="owasp-item">
+    <div class="owasp-head"><span class="owasp-id">A04</span><b>Insecure Design</b><span class="chev">▼</span></div>
+    <div class="owasp-body"><div class="owasp-body-inner">
+      <p><b>What:</b> Flaws in architecture, not implementation.</p>
+      <p><b>Example:</b> No rate limiting on password reset.</p>
+      <p><b>Why:</b> Security not considered during design.</p>
+      <p><b>Prevention:</b> Threat modeling. Secure design patterns.</p>
+    </div></div>
+  </div>
+
+  <div class="owasp-item">
+    <div class="owasp-head"><span class="owasp-id">A05</span><b>Security Misconfiguration</b><span class="chev">▼</span></div>
+    <div class="owasp-body"><div class="owasp-body-inner">
+      <p><b>What:</b> Insecure default settings.</p>
+      <p><b>Example:</b> Debug mode in production. Open S3 buckets.</p>
+      <p><b>Why:</b> Oversight, lack of hardening.</p>
+      <p><b>Prevention:</b> Secure defaults. Regular audits. Automate configuration.</p>
+    </div></div>
+  </div>
+
+  <div class="owasp-item">
+    <div class="owasp-head"><span class="owasp-id">A06</span><b>Vulnerable Components</b><span class="chev">▼</span></div>
+    <div class="owasp-body"><div class="owasp-body-inner">
+      <p><b>What:</b> Using libraries with known vulnerabilities.</p>
+      <p><b>Example:</b> Outdated Log4j.</p>
+      <p><b>Why:</b> Not tracking dependencies.</p>
+      <p><b>Prevention:</b> Dependency scanning. Regular updates. SBOM.</p>
+    </div></div>
+  </div>
+
+  <div class="owasp-item">
+    <div class="owasp-head"><span class="owasp-id">A07</span><b>Identification &amp; Authentication Failures</b><span class="chev">▼</span></div>
+    <div class="owasp-body"><div class="owasp-body-inner">
+      <p><b>What:</b> Weak authentication mechanisms.</p>
+      <p><b>Example:</b> No MFA. Weak password policies.</p>
+      <p><b>Why:</b> Convenience over security.</p>
+      <p><b>Prevention:</b> MFA. Strong password hashing. Session management.</p>
+    </div></div>
+  </div>
+
+  <div class="owasp-item">
+    <div class="owasp-head"><span class="owasp-id">A08</span><b>Software &amp; Data Integrity Failures</b><span class="chev">▼</span></div>
+    <div class="owasp-body"><div class="owasp-body-inner">
+      <p><b>What:</b> Trusting unverified code or data.</p>
+      <p><b>Example:</b> Insecure deserialization. Unsigned updates.</p>
+      <p><b>Why:</b> No integrity verification.</p>
+      <p><b>Prevention:</b> Sign artifacts. Verify checksums. Use trusted sources.</p>
+    </div></div>
+  </div>
+
+  <div class="owasp-item">
+    <div class="owasp-head"><span class="owasp-id">A09</span><b>Security Logging &amp; Monitoring Failures</b><span class="chev">▼</span></div>
+    <div class="owasp-body"><div class="owasp-body-inner">
+      <p><b>What:</b> Not detecting or responding to breaches.</p>
+      <p><b>Example:</b> No logs of failed logins.</p>
+      <p><b>Why:</b> Logging overlooked.</p>
+      <p><b>Prevention:</b> Log security events. Monitor. Alert. Respond.</p>
+    </div></div>
+  </div>
+
+  <div class="owasp-item">
+    <div class="owasp-head"><span class="owasp-id">A10</span><b>SSRF</b><span class="chev">▼</span></div>
+    <div class="owasp-body"><div class="owasp-body-inner">
+      <p><b>What:</b> Server makes requests to attacker-controlled destinations.</p>
+      <p><b>Example:</b> Fetching internal metadata service.</p>
+      <p><b>Why:</b> Unvalidated URLs.</p>
+      <p><b>Prevention:</b> Allowlist. Block internal IPs.</p>
+    </div></div>
+  </div>
+</section>
+
+<!-- ================= 11. ZERO TRUST ================= -->
+<section id="zerotrust" class="reveal">
+  <div class="sec-num">11 — ZERO TRUST</div>
+  <h2>Zero Trust — <span class="accent">Never Trust, Always Verify</span></h2>
+  <p class="lead">No implicit trust based on network location.</p>
+
+  <div class="grid grid-3">
+    <div class="mini"><b>Verify explicitly</b><span>Always authenticate and authorize.</span></div>
+    <div class="mini"><b>Least privilege</b><span>Minimum access necessary.</span></div>
+    <div class="mini"><b>Assume breach</b><span>Design for compromise.</span></div>
+  </div>
+
+  <h3>Zero Trust Architecture</h3>
+  <div class="flow">
+    <div class="flow-node">User</div><div class="flow-arrow">↓</div>
+    <div class="flow-node">Identity Verification</div><div class="flow-arrow">↓</div>
+    <div class="flow-node">Device Verification</div><div class="flow-arrow">↓</div>
+    <div class="flow-node hi">Policy Engine</div><div class="flow-arrow">↓</div>
+    <div class="flow-node">Least Privilege Access</div><div class="flow-arrow">↓</div>
+    <div class="flow-node">Micro-segmented Resources</div><div class="flow-arrow">↓</div>
+    <div class="flow-node hi">Continuous Monitoring</div>
+  </div>
+
+  <h3>Applying Zero Trust</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Layer</th><th>Implementation</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Identity</strong></td><td>MFA, passkeys, conditional access</td></tr>
+        <tr><td><strong>Device</strong></td><td>Certificates, MDM, posture checks</td></tr>
+        <tr><td><strong>Network</strong></td><td>Micro-segmentation, service mesh</td></tr>
+        <tr><td><strong>Application</strong></td><td>API gateway, authorization</td></tr>
+        <tr><td><strong>Data</strong></td><td>Encryption, access controls</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ================= 12. AI AGENT SECURITY ================= -->
+<section id="aisec" class="reveal">
+  <div class="sec-num">12 — AI AGENT SECURITY</div>
+  <h2>AI Agent <span class="accent">Security</span></h2>
+
+  <h3>Why AI Agent Security Matters</h3>
+  <p>AI agents can access databases, call APIs, read files, execute code, and communicate with other agents. Unrestricted access = massive risk.</p>
+
+  <div class="flow-row">
+    <div class="flow-node">Agent Identity</div><div class="flow-arrow">→</div>
+    <div class="flow-node">Authentication</div><div class="flow-arrow">→</div>
+    <div class="flow-node hi">Authorization</div><div class="flow-arrow">→</div>
+    <div class="flow-node">Scoped Tools</div><div class="flow-arrow">→</div>
+    <div class="flow-node">Audit Log</div>
+  </div>
+
+  <h3>AI Agent Risks</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Risk</th><th>Description</th><th>Mitigation</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Prompt Injection</strong></td><td>Malicious input manipulates agent</td><td>Input sanitization, sandboxing</td></tr>
+        <tr><td><strong>Data Leakage</strong></td><td>Agent exposes sensitive data</td><td>Output filtering, least privilege</td></tr>
+        <tr><td><strong>Excessive Privileges</strong></td><td>Agent has too much access</td><td>Scope permissions tightly</td></tr>
+        <tr><td><strong>Agent-to-Agent Attacks</strong></td><td>Compromised agent attacks others</td><td>Mutual authentication, monitoring</td></tr>
+        <tr><td><strong>Credential Theft</strong></td><td>Agent credentials stolen</td><td>Short-lived tokens, rotation</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Securing AI Agents</h3>
+  <div class="grid grid-2">
+    <div class="mini"><b>1. Least Privilege</b><span>Grant minimum necessary permissions. Scope to specific resources. Time-bound access.</span></div>
+    <div class="mini"><b>2. Human Approval</b><span>Require approval for sensitive actions. Log all decisions. Enable rollback.</span></div>
+    <div class="mini"><b>3. Sandboxing</b><span>Isolate agent execution. Limit network access. Restrict file system.</span></div>
+    <div class="mini"><b>4. Audit Logging</b><span>Record all agent actions. Track inputs and outputs. Enable forensics.</span></div>
+    <div class="mini"><b>5. Monitoring</b><span>Detect anomalous behavior. Alert on policy violations. Rate-limit agent actions.</span></div>
+  </div>
+
+  <h3>AI Agent Security Checklist</h3>
+  <div class="checklist">
+    <label class="check"><input type="checkbox"><span>Unique identity per agent</span></label>
+    <label class="check"><input type="checkbox"><span>Scoped permissions</span></label>
+    <label class="check"><input type="checkbox"><span>Short-lived credentials</span></label>
+    <label class="check"><input type="checkbox"><span>Human approval for sensitive actions</span></label>
+    <label class="check"><input type="checkbox"><span>Sandboxed execution</span></label>
+    <label class="check"><input type="checkbox"><span>Comprehensive audit logging</span></label>
+    <label class="check"><input type="checkbox"><span>Anomaly detection</span></label>
+    <label class="check"><input type="checkbox"><span>Regular permission reviews</span></label>
+  </div>
+</section>
+
+<!-- ================= 13. MACHINE IDENTITY ================= -->
+<section id="machine" class="reveal">
+  <div class="sec-num">13 — MACHINE IDENTITY</div>
+  <h2>Machine <span class="accent">Identity</span></h2>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Aspect</th><th>Human Identity</th><th>Machine Identity</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Examples</strong></td><td>Employees, customers</td><td>Services, workloads, bots</td></tr>
+        <tr><td><strong>Authentication</strong></td><td>Passwords, MFA, SSO</td><td>Certificates, keys, tokens</td></tr>
+        <tr><td><strong>Lifecycle</strong></td><td>Onboarding, offboarding</td><td>Provisioning, rotation</td></tr>
+        <tr><td><strong>Scale</strong></td><td>Hundreds to thousands</td><td>Thousands to millions</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Types of Machine Identity</h3>
+  <div class="grid grid-3">
+    <div class="mini"><b>Service Identity</b><span>Microservices, APIs</span></div>
+    <div class="mini"><b>Workload Identity</b><span>Containers, pods, functions</span></div>
+    <div class="mini"><b>Service Accounts</b><span>Cloud resources</span></div>
+    <div class="mini"><b>API Keys</b><span>Third-party integrations</span></div>
+    <div class="mini"><b>Certificates</b><span>TLS, mTLS</span></div>
+    <div class="mini"><b>Tokens</b><span>OAuth, JWT</span></div>
+  </div>
+
+  <div class="callout">
+    <p><strong>Why it matters:</strong> Modern applications have more machines than humans. Each machine identity is a potential attack vector. Best practices: unique identity per service, short-lived credentials, automatic rotation, least privilege, audit all access.</p>
+  </div>
+</section>
+
+<!-- ================= 14. CLOUD ================= -->
+<section id="cloud" class="reveal">
+  <div class="sec-num">14 — CLOUD SECURITY</div>
+  <h2>Cloud <span class="accent">Security</span></h2>
+
+  <h3>Cloud IAM</h3>
+  <p>Identity and Access Management controls who can do what in cloud environments.</p>
+  <div class="grid grid-3">
+    <div class="mini"><b>AWS IAM</b><span>Users, roles, policies</span></div>
+    <div class="mini"><b>Azure Entra ID</b><span>Identities, conditional access</span></div>
+    <div class="mini"><b>Google Cloud IAM</b><span>Members, roles, policies</span></div>
+  </div>
+
+  <h3>Cloud Security Best Practices</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Area</th><th>Practice</th></tr></thead>
+      <tbody>
+        <tr><td><strong>IAM</strong></td><td>Least privilege, no root access</td></tr>
+        <tr><td><strong>Service Accounts</strong></td><td>Scoped permissions, rotation</td></tr>
+        <tr><td><strong>Secrets</strong></td><td>Use secret managers, never hardcode</td></tr>
+        <tr><td><strong>Encryption</strong></td><td>At rest and in transit</td></tr>
+        <tr><td><strong>Network</strong></td><td>Security groups, private subnets</td></tr>
+        <tr><td><strong>Logging</strong></td><td>CloudTrail, audit logs</td></tr>
+        <tr><td><strong>Monitoring</strong></td><td>Alerts on anomalies</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Common Cloud Security Mistakes</h3>
+  <div class="grid grid-2">
+    <div class="mini"><b>Overprivileged service accounts</b><span>Granting more than needed.</span></div>
+    <div class="mini"><b>Public storage buckets</b><span>Data exposed to the internet.</span></div>
+    <div class="mini"><b>Hardcoded credentials</b><span>Secrets in source code.</span></div>
+    <div class="mini"><b>Unencrypted data</b><span>At rest or in transit.</span></div>
+    <div class="mini"><b>No logging or monitoring</b><span>Blind to incidents.</span></div>
+    <div class="mini"><b>Open security groups</b><span>0.0.0.0/0 on sensitive ports.</span></div>
+  </div>
+</section>
+
+<!-- ================= 15. DEVSECOPS ================= -->
+<section id="devsecops" class="reveal">
+  <div class="sec-num">15 — DEVSECOPS</div>
+  <h2>Dev<span class="accent">Sec</span>Ops</h2>
+  <p class="lead">Security in the development lifecycle. Security is not a phase — it's continuous.</p>
+
+  <div class="flow">
+    <div class="flow-node">Code</div><div class="flow-arrow">↓</div>
+    <div class="flow-node">Commit</div><div class="flow-arrow">↓</div>
+    <div class="flow-node">Build</div><div class="flow-arrow">↓</div>
+    <div class="flow-node">Test</div><div class="flow-arrow">↓</div>
+    <div class="flow-node hi">Security Scan</div><div class="flow-arrow">↓</div>
+    <div class="flow-node">Deploy</div><div class="flow-arrow">↓</div>
+    <div class="flow-node hi">Monitor</div>
+  </div>
+
+  <h3>DevSecOps Tools</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Tool Type</th><th>Purpose</th><th>Examples</th></tr></thead>
+      <tbody>
+        <tr><td><strong>SAST</strong></td><td>Static code analysis</td><td>SonarQube, Semgrep</td></tr>
+        <tr><td><strong>DAST</strong></td><td>Dynamic testing</td><td>OWASP ZAP, Burp</td></tr>
+        <tr><td><strong>SCA</strong></td><td>Dependency scanning</td><td>Snyk, Dependabot</td></tr>
+        <tr><td><strong>Secret Scanning</strong></td><td>Detect secrets in code</td><td>GitGuardian, TruffleHog</td></tr>
+        <tr><td><strong>Container Scanning</strong></td><td>Image vulnerabilities</td><td>Trivy, Clair</td></tr>
+        <tr><td><strong>IaC Security</strong></td><td>Infrastructure scanning</td><td>Checkov, tfsec</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>CI/CD Security</h3>
+  <div class="grid grid-3">
+    <div class="mini"><b>Sign commits</b><span>Verify authorship.</span></div>
+    <div class="mini"><b>Scan before merge</b><span>Block vulnerable code.</span></div>
+    <div class="mini"><b>Protect build environment</b><span>Isolate runners.</span></div>
+    <div class="mini"><b>Secure artifact storage</b><span>Signed, versioned.</span></div>
+    <div class="mini"><b>Audit deployments</b><span>Who shipped what, when.</span></div>
+  </div>
+</section>
+
+<!-- ================= 16. SUPPLY CHAIN ================= -->
+<section id="supply" class="reveal">
+  <div class="sec-num">16 — SOFTWARE SUPPLY CHAIN SECURITY</div>
+  <h2>Software <span class="accent">Supply Chain Security</span></h2>
+
+  <h3>The Problem</h3>
+  <p>Your application depends on open-source libraries, third-party packages, build tools, and container images. Any of these can be compromised.</p>
+
+  <h3>Supply Chain Attacks</h3>
+  <div class="grid grid-3">
+    <div class="mini"><b>Malicious package</b><span>Published to npm or PyPI.</span></div>
+    <div class="mini"><b>Compromised build server</b><span>Artifacts tampered at source.</span></div>
+    <div class="mini"><b>Backdoored dependency</b><span>Trusted component turns hostile.</span></div>
+  </div>
+
+  <h3>Supply Chain Security Practices</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Practice</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><strong>SBOM</strong></td><td>Software Bill of Materials — list all dependencies</td></tr>
+        <tr><td><strong>Dependency Scanning</strong></td><td>Detect known vulnerabilities</td></tr>
+        <tr><td><strong>Signed Packages</strong></td><td>Verify package integrity</td></tr>
+        <tr><td><strong>Build Integrity</strong></td><td>Secure CI/CD pipeline</td></tr>
+        <tr><td><strong>Provenance</strong></td><td>Track where artifacts came from</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout">
+    <p><strong>SBOM explained:</strong> An SBOM lists all components, versions, licenses, and dependencies. <strong>Why it matters:</strong> When a vulnerability is disclosed, you know if you're affected.</p>
+  </div>
+</section>
+
+<!-- ================= 17. K8S ================= -->
+<section id="k8s" class="reveal">
+  <div class="sec-num">17 — CLOUD-NATIVE SECURITY</div>
+  <h2>Kubernetes &amp; <span class="accent">Cloud-Native Security</span></h2>
+
+  <h3>Docker Security</h3>
+  <div class="grid grid-3">
+    <div class="mini"><b>Minimal base images</b><span>Reduce attack surface.</span></div>
+    <div class="mini"><b>Don't run as root</b><span>Use non-root users.</span></div>
+    <div class="mini"><b>Scan images</b><span>Before deployment.</span></div>
+    <div class="mini"><b>Sign images</b><span>Verify provenance.</span></div>
+    <div class="mini"><b>Limit capabilities</b><span>Drop unnecessary Linux caps.</span></div>
+  </div>
+
+  <h3>Kubernetes Security</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Area</th><th>Practice</th></tr></thead>
+      <tbody>
+        <tr><td><strong>RBAC</strong></td><td>Least privilege roles</td></tr>
+        <tr><td><strong>Secrets</strong></td><td>Encrypted, not in env vars</td></tr>
+        <tr><td><strong>Network Policies</strong></td><td>Restrict pod communication</td></tr>
+        <tr><td><strong>Pod Security</strong></td><td>Non-root, read-only filesystem</td></tr>
+        <tr><td><strong>Image Scanning</strong></td><td>Before deployment</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Service Mesh</h3>
+  <p>Provides mTLS between services, service-to-service authentication, traffic policies, and observability. Examples: Istio, Linkerd.</p>
+</section>
+
+<!-- ================= 18. PLATFORM ================= -->
+<section id="platform" class="reveal">
+  <div class="sec-num">18 — PLATFORM ENGINEERING</div>
+  <h2>Platform <span class="accent">Engineering</span></h2>
+
+  <p>Building internal platforms that provide self-service infrastructure, golden paths, secure defaults, and developer portals.</p>
+
+  <h3>Internal Developer Platform (IDP)</h3>
+  <div class="grid grid-4">
+    <div class="mini"><b>Templates</b><span>For common services</span></div>
+    <div class="mini"><b>Pre-configured security</b><span>Baked in by default</span></div>
+    <div class="mini"><b>CI/CD pipelines</b><span>Ready to use</span></div>
+    <div class="mini"><b>Observability</b><span>Out of the box</span></div>
+  </div>
+
+  <div class="callout ok">
+    <p><strong>Goal:</strong> Make the secure path the easy path. Platform teams embed security through approved base images, pre-configured secrets management, policy-as-code, and automated compliance checks. Developers get security without friction.</p>
+  </div>
+</section>
+
+<!-- ================= 19. OBSERVABILITY ================= -->
+<section id="observability" class="reveal">
+  <div class="sec-num">19 — OBSERVABILITY &amp; MONITORING</div>
+  <h2>Observability &amp; <span class="accent">Monitoring</span></h2>
+
+  <div class="grid grid-2">
+    <div class="mini"><b>Monitoring asks</b><span>"Is something wrong?"</span></div>
+    <div class="mini"><b>Observability asks</b><span>"Why is it wrong?"</span></div>
+  </div>
+
+  <h3>Pillars of Observability</h3>
+  <div class="grid grid-3">
+    <div class="mini"><b>Logs</b><span>Discrete events</span></div>
+    <div class="mini"><b>Metrics</b><span>Numerical measurements</span></div>
+    <div class="mini"><b>Traces</b><span>Request flows across services</span></div>
+  </div>
+
+  <h3>Security Monitoring</h3>
+  <div class="grid grid-2">
+    <div class="mini"><b>SIEM</b><span>Security Information and Event Management</span></div>
+    <div class="mini"><b>Audit Logs</b><span>Who did what, when</span></div>
+    <div class="mini"><b>Anomaly Detection</b><span>Unusual patterns</span></div>
+    <div class="mini"><b>Alerting</b><span>Notify on suspicious activity</span></div>
+  </div>
+
+  <h3>Incident Response</h3>
+  <div class="flow-row">
+    <div class="flow-node hi">Detect</div><div class="flow-arrow">→</div>
+    <div class="flow-node">Contain</div><div class="flow-arrow">→</div>
+    <div class="flow-node">Eradicate</div><div class="flow-arrow">→</div>
+    <div class="flow-node">Recover</div><div class="flow-arrow">→</div>
+    <div class="flow-node hi">Learn</div>
+  </div>
+</section>
+
+<!-- ================= 20. API SECURITY ================= -->
+<section id="apisec" class="reveal">
+  <div class="sec-num">20 — API SECURITY</div>
+  <h2>API <span class="accent">Security</span></h2>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Area</th><th>Practice</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Authentication</strong></td><td>OAuth, JWT, API keys</td></tr>
+        <tr><td><strong>Authorization</strong></td><td>Per-endpoint checks</td></tr>
+        <tr><td><strong>Rate Limiting</strong></td><td>Prevent abuse</td></tr>
+        <tr><td><strong>Input Validation</strong></td><td>Schema validation</td></tr>
+        <tr><td><strong>Output Filtering</strong></td><td>Prevent data exposure</td></tr>
+        <tr><td><strong>CORS</strong></td><td>Restrict origins</td></tr>
+        <tr><td><strong>Logging</strong></td><td>Audit all requests</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Broken Object Level Authorization (BOLA)</h3>
+  <p><strong>What:</strong> Accessing objects without proper authorization. <strong>Example:</strong> <code>GET /api/users/123</code> returns another user's data. <strong>Prevention:</strong> Check authorization for every object access.</p>
+
+  <h3>Excessive Data Exposure</h3>
+  <p><strong>What:</strong> Returning more data than needed. <strong>Example:</strong> API returns full user object including password hash. <strong>Prevention:</strong> Filter responses. Return only necessary fields.</p>
+
+  <h3>Secure API Architecture</h3>
+  <div class="flow">
+    <div class="flow-node">Client</div><div class="flow-arrow">↓</div>
+    <div class="flow-node hi">API Gateway</div><div class="flow-arrow">↓</div>
+    <div class="flow-node">Authentication</div><div class="flow-arrow">↓</div>
+    <div class="flow-node">Authorization</div><div class="flow-arrow">↓</div>
+    <div class="flow-node">Rate Limiting</div><div class="flow-arrow">↓</div>
+    <div class="flow-node">Input Validation</div><div class="flow-arrow">↓</div>
+    <div class="flow-node">Service</div><div class="flow-arrow">↓</div>
+    <div class="flow-node">Database</div><div class="flow-arrow">↓</div>
+    <div class="flow-node hi">Logging → Monitoring</div>
+  </div>
+</section>
+
+<!-- ================= 21. ARCHITECTURE ================= -->
+<section id="arch" class="reveal">
+  <div class="sec-num">21 — SECURITY ARCHITECTURE</div>
+  <h2>Complete <span class="accent">Security Architecture</span></h2>
+
+  <div class="flow">
+    <div class="flow-node hi">User</div><div class="flow-arrow">↓</div>
+    <div class="flow-node">Web / Mobile Application</div><div class="flow-arrow">↓</div>
+    <div class="flow-node">Identity Provider</div><div class="flow-arrow">↓</div>
+    <div class="flow-node hi">OAuth / OIDC</div><div class="flow-arrow">↓</div>
+    <div class="flow-node">MFA / Passkey</div><div class="flow-arrow">↓</div>
+    <div class="flow-node hi">API Gateway</div><div class="flow-arrow">↓</div>
+    <div class="flow-node">Authorization</div><div class="flow-arrow">↓</div>
+    <div class="flow-node">Application Services</div><div class="flow-arrow">↓</div>
+    <div class="flow-node">Database</div><div class="flow-arrow">↓</div>
+    <div class="flow-node hi">Logging + Monitoring + SIEM</div>
+  </div>
+
+  <h3>Where Security Fits</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Layer</th><th>Security Control</th></tr></thead>
+      <tbody>
+        <tr><td><strong>User</strong></td><td>MFA, passkeys</td></tr>
+        <tr><td><strong>Application</strong></td><td>Input validation, CSP</td></tr>
+        <tr><td><strong>Identity</strong></td><td>OAuth, OIDC, SSO</td></tr>
+        <tr><td><strong>API Gateway</strong></td><td>Rate limiting, auth</td></tr>
+        <tr><td><strong>Services</strong></td><td>Zero Trust, mTLS</td></tr>
+        <tr><td><strong>Database</strong></td><td>Encryption, access control</td></tr>
+        <tr><td><strong>Monitoring</strong></td><td>SIEM, alerts</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Integrated Security Layers</h3>
+  <div class="grid grid-3">
+    <div class="mini"><b>Zero Trust</b><span>Throughout all layers</span></div>
+    <div class="mini"><b>DevSecOps</b><span>In CI/CD pipeline</span></div>
+    <div class="mini"><b>Secrets Management</b><span>Centralized, rotated</span></div>
+    <div class="mini"><b>AI Agent Security</b><span>Scoped, audited</span></div>
+    <div class="mini"><b>Cloud Security</b><span>IAM, encryption</span></div>
+    <div class="mini"><b>API Security</b><span>Gateway, authorization</span></div>
+  </div>
+</section>
+
+<!-- ================= 22. CHECKLIST ================= -->
+<section id="checklist" class="reveal">
+  <div class="sec-num">22 — DEVELOPER SECURITY CHECKLIST</div>
+  <h2>Developer <span class="accent">Security Checklist</span></h2>
+  <p class="lead">Tick items as you implement them. This works as a long-term reference.</p>
+
+  <div class="checklist">
+    <label class="check"><input type="checkbox"><span>Use MFA</span></label>
+    <label class="check"><input type="checkbox"><span>Prefer passkeys where appropriate</span></label>
+    <label class="check"><input type="checkbox"><span>Use HTTPS everywhere</span></label>
+    <label class="check"><input type="checkbox"><span>Validate authorization server-side</span></label>
+    <label class="check"><input type="checkbox"><span>Apply least privilege</span></label>
+    <label class="check"><input type="checkbox"><span>Secure tokens (httpOnly, short-lived)</span></label>
+    <label class="check"><input type="checkbox"><span>Hash passwords with bcrypt or Argon2</span></label>
+    <label class="check"><input type="checkbox"><span>Protect secrets (never hardcode)</span></label>
+    <label class="check"><input type="checkbox"><span>Validate all inputs</span></label>
+    <label class="check"><input type="checkbox"><span>Prevent injection (parameterized queries)</span></label>
+    <label class="check"><input type="checkbox"><span>Configure security headers</span></label>
+    <label class="check"><input type="checkbox"><span>Scan dependencies</span></label>
+    <label class="check"><input type="checkbox"><span>Secure CI/CD pipeline</span></label>
+    <label class="check"><input type="checkbox"><span>Monitor logs and alerts</span></label>
+    <label class="check"><input type="checkbox"><span>Rate-limit APIs</span></label>
+    <label class="check"><input type="checkbox"><span>Review third-party packages</span></label>
+    <label class="check"><input type="checkbox"><span>Secure cloud IAM</span></label>
+    <label class="check"><input type="checkbox"><span>Secure AI agents (scope, audit)</span></label>
+    <label class="check"><input type="checkbox"><span>Audit privileged actions</span></label>
+    <label class="check"><input type="checkbox"><span>Continuously evaluate security</span></label>
+  </div>
+
+  <div id="score" class="callout"><p><strong>Progress:</strong> 0 / 20 completed</p></div>
+</section>
+
+<!-- ================= FINAL ================= -->
+<section id="final" class="reveal">
+  <div class="sec-num">23 — FINAL TAKEAWAY</div>
+  <div class="final-quote">
+    <p>Modern security is no longer a single feature. It is a continuous engineering practice across identity, applications, APIs, infrastructure, data, cloud, AI agents, and people.</p>
+  </div>
+
+  <p style="margin-top:34px;text-align:center;max-width:820px;margin-left:auto;margin-right:auto">
+    The developers who thrive in 2026 and beyond will be those who treat security as a core competency — not a checkbox, not an afterthought, but a fundamental part of how they design, build, and ship software.
+  </p>
+
+  <div class="labs"><span>XTutiRaiseUP II Labs | Code • Security • Opportunity</span></div>
+</section>
+
+</main>
+
+<!-- ================= FOOTER ================= -->
+<footer>
+  <div class="hashtags">
+    <span>#CyberSecurity</span>
+    <span>#SoftwareEngineering</span>
+    <span>#AI</span>
+    <span>#AIAgents</span>
+    <span>#Authentication</span>
+    <span>#Authorization</span>
+    <span>#MFA</span>
+    <span>#OAuth</span>
+    <span>#ZeroTrust</span>
+    <span>#DevSecOps</span>
+    <span>#CloudSecurity</span>
+    <span>#APISecurity</span>
+    <span>#ApplicationSecurity</span>
+    <span>#Java</span>
+    <span>#React</span>
+    <span>#SystemDesign</span>
+    <span>#XTutiRaiseUPIILabs</span>
+  </div>
+  <small>
+    MODERN SOFTWARE &amp; CYBERSECURITY IN 2026 — The Complete Developer Guide<br>
+    Technologies and security guidance evolve over time. Always verify current best practices for your stack.
+  </small>
+</footer>
+
+<button id="top" aria-label="Back to top">↑</button>
+
+<script>
+/* ============================================================
+   PROGRESS BAR
+============================================================ */
+const progress = document.getElementById('progress');
+const topBtn = document.getElementById('top');
+
+function onScroll(){
+  const h = document.documentElement;
+  const scrolled = h.scrollTop / (h.scrollHeight - h.clientHeight);
+  progress.style.width = (scrolled * 100) + '%';
+  topBtn.classList.toggle('show', h.scrollTop > 600);
+}
+window.addEventListener('scroll', onScroll, {passive:true});
+onScroll();
+
+topBtn.addEventListener('click', () => window.scrollTo({top:0, behavior:'smooth'}));
+
+/* ============================================================
+   REVEAL ON SCROLL
+============================================================ */
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if(e.isIntersecting){
+      e.target.classList.add('show');
+      revealObserver.unobserve(e.target);
+    }
+  });
+}, {threshold:0.08, rootMargin:'0px 0px -40px 0px'});
+
+document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+/* ============================================================
+   TIMELINE STAGGER
+============================================================ */
+const tlObserver = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if(e.isIntersecting){
+      const el = e.target;
+      const delay = Array.from(el.parentNode.children).indexOf(el) % 4 * 90;
+      setTimeout(() => el.classList.add('show'), delay);
+      tlObserver.unobserve(el);
+    }
+  });
+}, {threshold:0.15});
+
+document.querySelectorAll('.tl-item').forEach(el => tlObserver.observe(el));
+
+/* ============================================================
+   OWASP ACCORDION
+============================================================ */
+document.querySelectorAll('.owasp-head').forEach(head => {
+  head.addEventListener('click', () => {
+    const item = head.parentElement;
+    const wasOpen = item.classList.contains('open');
+    document.querySelectorAll('.owasp-item').forEach(i => i.classList.remove('open'));
+    if(!wasOpen) item.classList.add('open');
+  });
+});
+/* open the first one by default */
+const firstOwasp = document.querySelector('.owasp-item');
+if(firstOwasp) firstOwasp.classList.add('open');
+
+/* ============================================================
+   CHECKLIST SCORE
+============================================================ */
+const checks = document.querySelectorAll('.check input');
+const scoreBox = document.getElementById('score');
+const total = checks.length;
+
+function updateScore(){
+  const done = document.querySelectorAll('.check input:checked').length;
+  const pct = Math.round(done / total * 100);
+  let color = '#22d3ee';
+  if(pct >= 50) color = '#8b5cf6';
+  if(pct >= 80) color = '#22c55e';
+  if(pct === 100) color = '#22c55e';
+  scoreBox.querySelector('p').innerHTML =
+    `<strong style="color:${color}">Progress: ${done} / ${total} completed (${pct}%)</strong>` +
+    (pct === 100 ? ' — Excellent. You are covering the essentials.' : '');
+}
+checks.forEach(c => c.addEventListener('change', updateScore));
+updateScore();
+
+/* ============================================================
+   NAV ACTIVE SECTION
+============================================================ */
+const navLinks = document.querySelectorAll('.nav-links a');
+const sections = Array.from(navLinks).map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+
+const navObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if(e.isIntersecting){
+      navLinks.forEach(a => a.classList.remove('active'));
+      const link = document.querySelector(`.nav-links a[href="#${e.target.id}"]`);
+      if(link){
+        link.classList.add('active');
+        link.scrollIntoView({inline:'center', block:'nearest', behavior:'smooth'});
+      }
+    }
+  });
+}, {rootMargin:'-25% 0px -65% 0px'});
+
+sections.forEach(s => navObserver.observe(s));
+
+/* ============================================================
+   RADAR CANVAS
+============================================================ */
+(function radar(){
+  const canvas = document.getElementById('radar');
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const S = canvas.width;
+  const C = S / 2;
+  const R = S / 2 - 18;
+
+  let angle = 0;
+  const blips = [];
+  let lastSpawn = 0;
+
+  // pre-seed some blips
+  for(let i = 0; i < 6; i++){
+    const a = Math.random() * Math.PI * 2;
+    const r = 40 + Math.random() * (R - 60);
+    blips.push({
+      a, r,
+      x: C + Math.cos(a) * r,
+      y: C + Math.sin(a) * r,
+      life: Math.random(),
+      seen: 0
+    });
+  }
+
+  function spawnBlip(){
+    const a = Math.random() * Math.PI * 2;
+    const r = 50 + Math.random() * (R - 70);
+    blips.push({
+      a, r,
+      x: C + Math.cos(a) * r,
+      y: C + Math.sin(a) * r,
+      life: 0,
+      seen: 0
+    });
+    if(blips.length > 16) blips.shift();
+  }
+
+  function draw(t){
+    ctx.clearRect(0, 0, S, S);
+
+    /* --- concentric rings --- */
+    for(let i = 1; i <= 4; i++){
+      ctx.beginPath();
+      ctx.arc(C, C, (R / 4) * i, 0, Math.PI * 2);
+      ctx.strokeStyle = 'rgba(34,211,238,' + (0.13 - i * 0.015) + ')';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+    }
+
+    /* --- cross lines --- */
+    ctx.strokeStyle = 'rgba(34,211,238,0.10)';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(C - R, C); ctx.lineTo(C + R, C);
+    ctx.moveTo(C, C - R); ctx.lineTo(C, C + R);
+    ctx.stroke();
+
+    /* --- diagonal lines --- */
+    ctx.strokeStyle = 'rgba(139,92,246,0.07)';
+    for(let d = 0; d < 4; d++){
+      const a = (Math.PI / 4) * d + Math.PI / 8;
+      ctx.beginPath();
+      ctx.moveTo(C - Math.cos(a) * R, C - Math.sin(a) * R);
+      ctx.lineTo(C + Math.cos(a) * R, C + Math.sin(a) * R);
+      ctx.stroke();
+    }
+
+    /* --- sweep --- */
+    const sweepLen = Math.PI / 3.2;
+    const grad = ctx.createRadialGradient(C, C, 0, C, C, R);
+    grad.addColorStop(0, 'rgba(34,211,238,0.55)');
+    grad.addColorStop(0.6, 'rgba(34,211,238,0.16)');
+    grad.addColorStop(1, 'rgba(34,211,238,0)');
+
+    ctx.beginPath();
+    ctx.moveTo(C, C);
+    ctx.arc(C, C, R, angle - sweepLen, angle);
+    ctx.closePath();
+    ctx.fillStyle = grad;
+    ctx.fill();
+
+    /* sweep leading edge */
+    ctx.beginPath();
+    ctx.moveTo(C, C);
+    ctx.lineTo(C + Math.cos(angle) * R, C + Math.sin(angle) * R);
+    ctx.strokeStyle = 'rgba(34,211,238,0.9)';
+    ctx.lineWidth = 2;
+    ctx.shadowBlur = 16;
+    ctx.shadowColor = 'rgba(34,211,238,0.9)';
+    ctx.stroke();
+    ctx.shadowBlur = 0;
+
+    /* --- center dot --- */
+    ctx.beginPath();
+    ctx.arc(C, C, 4.5, 0, Math.PI * 2);
+    ctx.fillStyle = '#22d3ee';
+    ctx.shadowBlur = 20;
+    ctx.shadowColor = '#22d3ee';
+    ctx.fill();
+    ctx.shadowBlur = 0;
+
+    /* --- blips --- */
+    if(t - lastSpawn > 1400){
+      spawnBlip();
+      lastSpawn = t;
+    }
+
+    blips.forEach(b => {
+      // detect when sweep passes the blip angle
+      let diff = angle - b.a;
+      while(diff < 0) diff += Math.PI * 2;
+      while(diff >= Math.PI * 2) diff -= Math.PI * 2;
+      if(diff < 0.09){
+        b.seen = 1;
+      }
+
+      b.life += 0.006;
+      const fade = b.seen ? Math.max(0, 1 - b.life) : 0;
+
+      if(fade > 0.01){
+        // glow
+        const rg = ctx.createRadialGradient(b.x, b.y, 0, b.x, b.y, 16);
+        rg.addColorStop(0, 'rgba(34,211,238,' + (0.75 * fade) + ')');
+        rg.addColorStop(0.5, 'rgba(139,92,246,' + (0.3 * fade) + ')');
+        rg.addColorStop(1, 'rgba(34,211,238,0)');
+        ctx.beginPath();
+        ctx.arc(b.x, b.y, 16, 0, Math.PI * 2);
+        ctx.fillStyle = rg;
+        ctx.fill();
+
+        // core
+        ctx.beginPath();
+        ctx.arc(b.x, b.y, 3.2, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(180,245,255,' + fade + ')';
+        ctx.fill();
+
+        // ring
+        ctx.beginPath();
+        ctx.arc(b.x, b.y, 6 + (1 - fade) * 8, 0, Math.PI * 2);
+        ctx.strokeStyle = 'rgba(34,211,238,' + (0.5 * fade) + ')';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+      } else if(!b.seen){
+        // faint untracked dot
+        ctx.beginPath();
+        ctx.arc(b.x, b.y, 2, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(139,92,246,0.28)';
+        ctx.fill();
+      }
+    });
+
+    // remove dead blips
+    for(let i = blips.length - 1; i >= 0; i--){
+      if(blips[i].seen && blips[i].life > 1.7) blips.splice(i, 1);
+    }
+
+    angle += 0.017;
+    if(angle > Math.PI * 2) angle -= Math.PI * 2;
+
+    requestAnimationFrame(draw);
+  }
+
+  requestAnimationFrame(draw);
+})();
+
+/* ============================================================
+   BACKGROUND PARTICLE CANVAS
+============================================================ */
+(function particles(){
+  const canvas = document.getElementById('bg-canvas');
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+
+  let W, H, particles = [];
+  const COUNT = window.innerWidth < 700 ? 28 : 62;
+  const LINK_DIST = 140;
+
+  function resize(){
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  const colors = ['34,211,238', '139,92,246', '236,72,153', '59,130,246'];
+
+  for(let i = 0; i < COUNT; i++){
+    particles.push({
+      x: Math.random() * W,
+      y: Math.random() * H,
+      vx: (Math.random() - 0.5) * 0.32,
+      vy: (Math.random() - 0.5) * 0.32,
+      r: Math.random() * 1.7 + 0.7,
+      c: colors[Math.floor(Math.random() * colors.length)]
+    });
+  }
+
+  function loop(){
+    ctx.clearRect(0, 0, W, H);
+
+    for(let i = 0; i < particles.length; i++){
+      const p = particles[i];
+      p.x += p.vx;
+      p.y += p.vy;
+
+      if(p.x < 0 || p.x > W) p.vx *= -1;
+      if(p.y < 0 || p.y > H) p.vy *= -1;
+
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(' + p.c + ',0.55)';
+      ctx.fill();
+
+      // links
+      for(let j = i + 1; j < particles.length; j++){
+        const q = particles[j];
+        const dx = p.x - q.x;
+        const dy = p.y - q.y;
+        const d = Math.sqrt(dx * dx + dy * dy);
+        if(d < LINK_DIST){
+          ctx.beginPath();
+          ctx.moveTo(p.x, p.y);
+          ctx.lineTo(q.x, q.y);
+          ctx.strokeStyle = 'rgba(34,211,238,' + (0.075 * (1 - d / LINK_DIST)) + ')';
+          ctx.lineWidth = 0.7;
+          ctx.stroke();
+        }
+      }
+    }
+
+    requestAnimationFrame(loop);
+  }
+  loop();
+})();
+
+/* ============================================================
+   SMOOTH ANCHOR OFFSET FIX (older browsers)
+============================================================ */
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', function(e){
+    const target = document.querySelector(this.getAttribute('href'));
+    if(target){
+      e.preventDefault();
+      const y = target.getBoundingClientRect().top + window.pageYOffset - 80;
+      window.scrollTo({top:y, behavior:'smooth'});
+    }
+  });
+});
+</script>
+</body>
+</html>
