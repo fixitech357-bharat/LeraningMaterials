@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XTutiRaiseUp - Course Enrollment</title>
+    <style>
+        :root {
+            --primary-blue: #002b5c;
+            --accent-yellow: #ffc107;
+            --text-dark: #333;
+            --bg-light: #f4f7f6;
+            --error-red: #dc3545;
+            --success-green: #28a745;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+        }
+
+        /* Top Banner */
+        .banner {
+            background-color: var(--primary-blue);
+            color: white;
+            padding: 15px 20px;
+            border-bottom: 5px solid var(--accent-yellow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .banner-text { text-align: center; flex: 1; min-width: 250px; }
+        .banner h1 { margin: 0; font-size: 22px; }
+        .banner p { margin: 5px 0 0 0; color: var(--accent-yellow); font-weight: bold; font-size: 14px; }
+        
+        .admin-btn {
+            background: transparent;
+            color: white;
+            border: 1px solid white;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+            font-weight: bold;
+        }
+        .admin-btn:hover { background: white; color: var(--primary-blue); }
+
+        /* Layout Container */
+        .container {
+            max-width: 1100px;
+            margin: 20px auto;
+            padding: 0 15px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        /* Public Stats */
+        .public-stats {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            width: 100%;
+        }
+        .stat-box {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            flex: 1;
+            min-width: 150px;
+            text-align: center;
+            border-top: 4px solid var(--primary-blue);
+        }
+        .stat-box h3 { margin: 0; font-size: 13px; color: #666; }
+        .stat-box p { margin: 8px 0 0 0; font-size: 20px; font-weight: bold; color: var(--primary-blue); }
+
+        /* Coupon Status Cards */
+        .coupon-status-container {
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        .coupon-card {
+            flex: 1;
+            min-width: 250px;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border-left: 5px solid #ccc;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .coupon-card.active { border-left-color: var(--success-green); }
+        .coupon-card.expired { border-left-color: var(--error-red); opacity: 0.7; }
+        
+        .coupon-info strong { display: block; font-size: 15px; }
+        .coupon-info span { font-size: 12px; color: #666; }
+        
+        .badge {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: bold;
+            color: white;
+            text-align: center;
+        }
+        .badge.active { background: var(--success-green); }
+        .badge.expired { background: var(--error-red); }
+        .badge.upcoming { background: #6c757d; }
+
+        /* Columns */
+        .course-info, .enroll-form {
+            flex: 1;
+            min-width: 320px;
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            box-sizing: border-box;
+        }
+        
+        /* Flyer Image */
+        .flyer-img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            display: block;
+        }
+
+        .price-box {
+            background: var(--bg-light);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 5px solid var(--accent-yellow);
+            text-align: center;
+        }
+        .regular-price { text-decoration: line-through; color: #888; font-size: 16px; }
+        .current-price { font-size: 32px; font-weight: bold; color: var(--primary-blue); margin: 5px 0; }
+
+        /* Form */
+        .form-group { margin-bottom: 12px; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: bold; font-size: 13px;}
+        
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-family: inherit;
+            font-size: 14px;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 10px;
+        }
+        .form-row .form-group { flex: 1; min-width: 0; }
+
+        .coupon-group { display: flex; gap: 10px; }
+        .coupon-group input { flex: 1; }
+        .coupon-group button {
+            background: var(--primary-blue);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .btn-submit {
+            width: 100%;
+            background: var(--accent-yellow);
+            color: var(--primary-blue);
+            font-size: 16px;
+            font-weight: bold;
+            padding: 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: 0.3s;
+        }
+        .btn-submit:hover { background: #e0a800; }
+        
+        .msg { font-size: 13px; margin-top: 5px; font-weight: bold; }
+        .success { color: var(--success-green); }
+        .error { color: var(--error-red); }
+
+        /* Admin Section */
+        #adminSection {
+            display: none;
+            max-width: 1100px;
+            margin: 20px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border-top: 5px solid var(--error-red);
+        }
+        
+        .table-responsive {
+            overflow-x: auto;
+            width: 100%;
+        }
+
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 13px; min-width: 900px; }
+        th, td { padding: 10px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background-color: var(--primary-blue); color: white; white-space: nowrap; }
+        tr:hover { background-color: #f5f5f5; }
+        
+        .admin-controls { margin-bottom: 15px; display: flex; gap: 10px; flex-wrap: wrap; }
+        .btn-danger { background: var(--error-red); color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer; font-weight: bold;}
+        .btn-warning { background: #ff9800; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer; font-weight: bold;}
+        .btn-success { background: var(--success-green); color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer; font-weight: bold;}
+
+        @media (max-width: 600px) {
+            .form-row { flex-direction: column; gap: 0; }
+            .banner h1 { font-size: 18px; }
+            .current-price { font-size: 28px; }
+            .course-info, .enroll-form { padding: 15px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="banner">
+        <div style="width: 120px; display: none;" class="desktop-spacer"></div>
+        <div class="banner-text">
+            <h1>XTutiRaiseUp - 10 Day Programming</h1>
+            <p>Learn Simply. Practice Daily. Grow Confidently.</p>
+        </div>
+        <div style="text-align: right;">
+            <button class="admin-btn" onclick="adminLogin()">Admin Login</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Public Stats -->
+        <div class="public-stats">
+            <div class="stat-box">
+                <h3>Total Visitors</h3>
+                <p id="visitorCount">0</p>
+            </div>
+            <div class="stat-box">
+                <h3>Total Enrolled</h3>
+                <p><span id="enrollCount">0</span> / 100</p>
+            </div>
+            <div class="stat-box">
+                <h3>Active Price</h3>
+                <p id="headerPrice">₹1499</p>
+            </div>
+        </div>
+
+        <!-- Coupon Status Cards -->
+        <div class="coupon-status-container">
+            <div class="coupon-card" id="card-learn500">
+                <div class="coupon-info">
+                    <strong>Code: LEARN500</strong>
+                    <span>First 25 students (₹500 Off)</span>
+                </div>
+                <div class="badge upcoming" id="badge-learn500">WAIT</div>
+            </div>
+            
+            <div class="coupon-card" id="card-learn300">
+                <div class="coupon-info">
+                    <strong>Code: LEARN300</strong>
+                    <span>Next 25 students (₹300 Off)</span>
+                </div>
+                <div class="badge upcoming" id="badge-learn300">WAIT</div>
+            </div>
+        </div>
+
+        <!-- Course Info & Flyer -->
+        <div class="course-info">
+            <h2>Course Details</h2>
+            <p>A complete 10-day beginner course to build your computer knowledge and programming skills.</p>
+            
+            <!-- ⚠️ YOUR IMAGE GOES HERE. SAVE AS flyer.jpg IN THE SAME FOLDER -->
+            <img src="flyer.jpg" alt="XTutiRaiseUp Course Flyer" class="flyer-img" onerror="this.style.display='none'">
+            
+            <div class="price-box">
+                <div class="regular-price">Regular Fee: ₹3,499</div>
+                <div class="current-price" id="display-price">₹1499</div>
+                <div class="price-note" id="priceNote" style="font-size: 12px; color: #666;">*No payment required now. Pay before course starts.</div>
+            </div>
+        </div>
+
+        <!-- Enrollment Form -->
+        <div class="enroll-form">
+            <h2>Reserve Your Seat</h2>
+            <form id="enrollmentForm" onsubmit="handleEnroll(event)">
+                
+                <div class="form-group">
+                    <label>Full Name *</label>
+                    <input type="text" id="name" placeholder="John Doe" required>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Email *</label>
+                        <input type="email" id="email" placeholder="john@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Phone (10 Digits) *</label>
+                        <input type="tel" id="phone" placeholder="9876543210" maxlength="10" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Date of Birth *</label>
+                        <input type="date" id="dob" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Qualification *</label>
+                        <select id="qualification" required>
+                            <option value="">Select</option>
+                            <option value="High School">High School</option>
+                            <option value="Diploma">Diploma</option>
+                            <option value="Bachelor's Degree">Bachelor's Degree</option>
+                            <option value="Master's Degree">Master's Degree</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>College / Organization *</label>
+                    <input type="text" id="organization" placeholder="e.g., XYZ College" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Coupon Code (Optional)</label>
+                    <div class="coupon-group">
+                        <input type="text" id="couponInput" placeholder="Enter Code">
+                        <button type="button" onclick="applyCoupon()">Apply</button>
+                    </div>
+                    <div id="couponMsg" class="msg"></div>
+                </div>
+
+                <button type="submit" class="btn-submit" id="submitBtn">Enroll Now (Pay Later)</button>
+                <div id="formMsg" class="msg" style="text-align:center; margin-top: 15px;"></div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Admin Dashboard -->
+    <div id="adminSection">
+        <h2 style="color: var(--error-red);">Admin Dashboard</h2>
+        <div class="admin-controls">
+            <button class="btn-success" onclick="exportToCSV()">⬇️ Export Data (Excel)</button>
+            <button class="btn-danger" onclick="resetData()">Delete All Data</button>
+            <button class="btn-warning" onclick="simulate(24)">Test: 24 Enrollments</button>
+            <button class="btn-warning" onclick="simulate(49)">Test: 49 Enrollments</button>
+            <button class="btn-warning" onclick="simulate(75)">Test: 75 Enrollments</button>
+        </div>
+
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>DOB</th>
+                        <th>Qualification</th>
+                        <th>Organization</th>
+                        <th>Coupon</th>
+                        <th>Amount</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="adminTableBody"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // --- Database Simulation ---
+        const STORAGE_KEY = 'xtuti_enrollments_v3'; 
+        let enrollments = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+        
+        let totalVisitors = parseInt(localStorage.getItem('xtuti_visitors')) || 0;
+
+        // Increment visitor count
+        totalVisitors++;
+        localStorage.setItem('xtuti_visitors', totalVisitors);
+        document.getElementById('visitorCount').innerText = totalVisitors;
+
+        // --- Global Variables ---
+        const PRICE_BASE = 1499;
+        let currentPrice = PRICE_BASE;
+        let appliedCoupon = null;
+
+        // --- Core Logic ---
+        function updateUI() {
+            const count = enrollments.length;
+            document.getElementById('enrollCount').innerText = count;
+
+            // 1. Update Coupon Badges
+            const badge500 = document.getElementById('badge-learn500');
+            const card500 = document.getElementById('card-learn500');
+            const badge300 = document.getElementById('badge-learn300');
+            const card300 = document.getElementById('card-learn300');
+            const headerPrice = document.getElementById('headerPrice');
+
+            card500.className = "coupon-card"; card300.className = "coupon-card";
+            badge500.className = "badge"; badge300.className = "badge";
+
+            if (count < 25) {
+                badge500.innerText = "ACTIVE"; badge500.classList.add('active'); card500.classList.add('active');
+                badge300.innerText = "WAIT"; badge300.classList.add('upcoming');
+                headerPrice.innerText = "₹999"; 
+            } else if (count >= 25 && count < 50) {
+                badge500.innerText = "EXPIRED"; badge500.classList.add('expired'); card500.classList.add('expired');
+                badge300.innerText = "ACTIVE"; badge300.classList.add('active'); card300.classList.add('active');
+                headerPrice.innerText = "₹1199"; 
+            } else {
+                badge500.innerText = "EXPIRED"; badge500.classList.add('expired'); card500.classList.add('expired');
+                badge300.innerText = "EXPIRED"; badge300.classList.add('expired'); card300.classList.add('expired');
+                headerPrice.innerText = "₹1499"; 
+            }
+
+            // 2. Populate Admin Table
+            const tbody = document.getElementById('adminTableBody');
+            tbody.innerHTML = '';
+            enrollments.forEach(student => {
+                let tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${student.date}</td>
+                    <td><strong>${student.name}</strong></td>
+                    <td>${student.email}</td>
+                    <td>${student.phone}</td>
+                    <td>${student.dob}</td>
+                    <td>${student.qualification}</td>
+                    <td>${student.organization}</td>
+                    <td>${student.couponUsed ? `<strong>${student.couponUsed}</strong>` : 'None'}</td>
+                    <td>₹${student.amount}</td>
+                    <td style="color: orange; font-weight: bold;">${student.status}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function applyCoupon() {
+            const code = document.getElementById('couponInput').value.trim().toUpperCase();
+            const msgEl = document.getElementById('couponMsg');
+            const priceEl = document.getElementById('display-price');
+            const count = enrollments.length;
+
+            msgEl.className = "msg";
+
+            if (code === 'LEARN500') {
+                if (count < 25) {
+                    currentPrice = 999; appliedCoupon = 'LEARN500';
+                    priceEl.innerText = `₹${currentPrice}`;
+                    msgEl.innerText = "Success! LEARN500 applied (₹500 Off).";
+                    msgEl.classList.add('success');
+                } else {
+                    msgEl.innerText = "Sorry, LEARN500 has EXPIRED.";
+                    msgEl.classList.add('error');
+                }
+            } 
+            else if (code === 'LEARN300') {
+                if (count >= 25 && count < 50) {
+                    currentPrice = 1199; appliedCoupon = 'LEARN300';
+                    priceEl.innerText = `₹${currentPrice}`;
+                    msgEl.innerText = "Success! LEARN300 applied (₹300 Off).";
+                    msgEl.classList.add('success');
+                } else if (count < 25) {
+                    msgEl.innerText = "LEARN300 is not active yet. Use LEARN500 first!";
+                    msgEl.classList.add('error');
+                } else {
+                    msgEl.innerText = "Sorry, LEARN300 has EXPIRED.";
+                    msgEl.classList.add('error');
+                }
+            } 
+            else {
+                msgEl.innerText = "Invalid Coupon Code.";
+                msgEl.classList.add('error');
+            }
+        }
+
+        function handleEnroll(e) {
+            e.preventDefault();
+            const formMsg = document.getElementById('formMsg');
+            
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const dob = document.getElementById('dob').value;
+            const qualification = document.getElementById('qualification').value;
+            const organization = document.getElementById('organization').value.trim();
+            const count = enrollments.length;
+
+            formMsg.className = "msg";
+
+            // 1. Basic Validation
+            if (!name || !email || !phone || !dob || !qualification || !organization) {
+                formMsg.innerText = "Error: Please fill all required (*) fields.";
+                formMsg.classList.add('error'); return;
+            }
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                formMsg.innerText = "Error: Invalid email address.";
+                formMsg.classList.add('error'); return;
+            }
+            if (!/^[0-9]{10}$/.test(phone)) {
+                formMsg.innerText = "Error: Phone must be exactly 10 digits.";
+                formMsg.classList.add('error'); return;
+            }
+
+            // 2. DUPLICATE CHECK
+            const isDuplicate = enrollments.some(student => 
+                student.email.toLowerCase() === email.toLowerCase() || 
+                student.phone === phone
+            );
+
+            if (isDuplicate) {
+                formMsg.innerText = "Error: A user with this Email or Phone number is already enrolled!";
+                formMsg.classList.add('error');
+                return; 
+            }
+
+            // 3. Re-verify coupon logic
+            let finalPrice = PRICE_BASE;
+            let finalCoupon = null;
+
+            if (appliedCoupon === 'LEARN500' && count < 25) {
+                finalPrice = 999; finalCoupon = 'LEARN500';
+            } else if (appliedCoupon === 'LEARN300' && count >= 25 && count < 50) {
+                finalPrice = 1199; finalCoupon = 'LEARN300';
+            } else if (appliedCoupon) {
+                alert("The coupon expired while you were filling the form. Price updated to ₹1499.");
+            }
+
+            // 4. Save Data
+            const newStudent = {
+                name: name, email: email, phone: phone, dob: dob,
+                qualification: qualification, organization: organization,
+                couponUsed: finalCoupon, amount: finalPrice,
+                status: "Pending Payment", date: new Date().toLocaleDateString()
+            };
+
+            enrollments.push(newStudent);
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(enrollments));
+
+            // 5. Reset Form
+            document.getElementById('enrollmentForm').reset();
+            document.getElementById('display-price').innerText = `₹${PRICE_BASE}`;
+            document.getElementById('couponMsg').innerText = "";
+            appliedCoupon = null; currentPrice = PRICE_BASE;
+
+            // 6. Success Message
+            formMsg.innerText = `Success! Seat reserved at ₹${finalPrice}. We will send a payment link soon.`;
+            formMsg.classList.add('success');
+            
+            updateUI();
+        }
+
+        // --- Admin Functions ---
+        function adminLogin() {
+            const password = prompt("Enter Admin Password:");
+            if (password === "10Day-Course") {
+                document.getElementById('adminSection').style.display = "block";
+                window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+            } else if (password !== null) {
+                alert("Incorrect Password!");
+            }
+        }
+
+        function exportToCSV() {
+            if (enrollments.length === 0) {
+                alert("No data to export!");
+                return;
+            }
+            let csvContent = "data:text/csv;charset=utf-8,Date,Name,Email,Phone,DOB,Qualification,Organization,Coupon Used,Amount to Pay,Status\n";
+            enrollments.forEach(function(rowArray) {
+                let row = [
+                    rowArray.date, rowArray.name, rowArray.email, rowArray.phone, 
+                    rowArray.dob, rowArray.qualification, rowArray.organization, 
+                    rowArray.couponUsed || "None", rowArray.amount, rowArray.status
+                ];
+                csvContent += row.join(",") + "\n";
+            });
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "XTuti_Enrollments.csv");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function resetData() {
+            if(confirm("DELETE ALL DATA? This cannot be undone.")) {
+                localStorage.removeItem(STORAGE_KEY);
+                location.reload();
+            }
+        }
+
+        function simulate(targetCount) {
+            if(confirm(`This will reset and create exactly ${targetCount} dummy enrollments. Proceed?`)) {
+                enrollments = [];
+                const qualifications = ["High School", "Diploma", "Bachelor's Degree", "Master's Degree"];
+                const orgs = ["IIT Delhi", "XYZ College", "Tech Corp", "Local University", "Freelancer"];
+
+                for(let i = 1; i <= targetCount; i++) {
+                    let price = 1499;
+                    let coupon = null;
+                    if (i <= 25) { price = 999; coupon = 'LEARN500'; }
+                    else if (i <= 50) { price = 1199; coupon = 'LEARN300'; }
+
+                    enrollments.push({
+                        name: `Student ${i}`,
+                        email: `student${i}@test.com`,
+                        phone: `98765432${i.toString().padStart(2, '0')}`,
+                        dob: `200${i%5}-0${(i%9)+1}-15`,
+                        qualification: qualifications[i % qualifications.length],
+                        organization: orgs[i % orgs.length],
+                        couponUsed: coupon,
+                        amount: price,
+                        status: "Pending Payment",
+                        date: new Date().toLocaleDateString()
+                    });
+                }
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(enrollments));
+                updateUI();
+                alert(`Simulated ${targetCount} enrollments.`);
+            }
+        }
+
+        // Initialize
+        updateUI();
+    </script>
+</body>
+</html>
