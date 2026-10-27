@@ -217,15 +217,26 @@
             width: 100%;
         }
 
-        table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 13px; min-width: 900px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 13px; min-width: 1100px; }
         th, td { padding: 10px; text-align: left; border-bottom: 1px solid #ddd; }
         th { background-color: var(--primary-blue); color: white; white-space: nowrap; }
         tr:hover { background-color: #f5f5f5; }
         
+        /* Admin Input styling inside table */
+        td input {
+            width: 100%;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            box-sizing: border-box;
+            font-size: 12px;
+        }
+
         .admin-controls { margin-bottom: 15px; display: flex; gap: 10px; flex-wrap: wrap; }
-        .btn-danger { background: var(--error-red); color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer; font-weight: bold;}
-        .btn-warning { background: #ff9800; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer; font-weight: bold;}
-        .btn-success { background: var(--success-green); color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer; font-weight: bold;}
+        .btn-danger { background: var(--error-red); color: white; border: none; padding: 8px 12px; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 12px;}
+        .btn-warning { background: #ff9800; color: white; border: none; padding: 8px 12px; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 12px;}
+        .btn-success { background: var(--success-green); color: white; border: none; padding: 8px 12px; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 12px;}
+        .btn-secondary { background: #6c757d; color: white; border: none; padding: 8px 12px; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 12px;}
 
         @media (max-width: 600px) {
             .form-row { flex-direction: column; gap: 0; }
@@ -257,7 +268,7 @@
             </div>
             <div class="stat-box">
                 <h3>Total Enrolled</h3>
-                <p><span id="enrollCount">0</span> / 100</p>
+                <p id="enrollCount">0</p>
             </div>
             <div class="stat-box">
                 <h3>Active Price</h3>
@@ -289,7 +300,6 @@
             <h2>Course Details</h2>
             <p>A complete 10-day beginner course to build your computer knowledge and programming skills.</p>
             
-            <!-- ⚠️ YOUR IMAGE GOES HERE. SAVE AS flyer.jpg IN THE SAME FOLDER -->
             <img src="flyer.jpg" alt="XTutiRaiseUp Course Flyer" class="flyer-img" onerror="this.style.display='none'">
             
             <div class="price-box">
@@ -302,6 +312,7 @@
         <!-- Enrollment Form -->
         <div class="enroll-form">
             <h2>Reserve Your Seat</h2>
+
             <form id="enrollmentForm" onsubmit="handleEnroll(event)">
                 
                 <div class="form-group">
@@ -347,7 +358,7 @@
                     <label>Coupon Code (Optional)</label>
                     <div class="coupon-group">
                         <input type="text" id="couponInput" placeholder="Enter Code">
-                        <button type="button" onclick="applyCoupon()">Apply</button>
+                        <button type="button" onclick="applyCoupon()" id="couponBtn">Apply</button>
                     </div>
                     <div id="couponMsg" class="msg"></div>
                 </div>
@@ -365,7 +376,6 @@
             <button class="btn-success" onclick="exportToCSV()">⬇️ Export Data (Excel)</button>
             <button class="btn-danger" onclick="resetData()">Delete All Data</button>
             <button class="btn-warning" onclick="simulate(24)">Test: 24 Enrollments</button>
-            <button class="btn-warning" onclick="simulate(49)">Test: 49 Enrollments</button>
             <button class="btn-warning" onclick="simulate(75)">Test: 75 Enrollments</button>
         </div>
 
@@ -383,6 +393,7 @@
                         <th>Coupon</th>
                         <th>Amount</th>
                         <th>Status</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody id="adminTableBody"></tbody>
@@ -406,6 +417,9 @@
         const PRICE_BASE = 1499;
         let currentPrice = PRICE_BASE;
         let appliedCoupon = null;
+        
+        // CRUD variable to track which row is being edited
+        let editingIndex = -1; 
 
         // --- Core Logic ---
         function updateUI() {
@@ -439,23 +453,119 @@
             // 2. Populate Admin Table
             const tbody = document.getElementById('adminTableBody');
             tbody.innerHTML = '';
-            enrollments.forEach(student => {
+            
+            enrollments.forEach((student, index) => {
                 let tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td>${student.date}</td>
-                    <td><strong>${student.name}</strong></td>
-                    <td>${student.email}</td>
-                    <td>${student.phone}</td>
-                    <td>${student.dob}</td>
-                    <td>${student.qualification}</td>
-                    <td>${student.organization}</td>
-                    <td>${student.couponUsed ? `<strong>${student.couponUsed}</strong>` : 'None'}</td>
-                    <td>₹${student.amount}</td>
-                    <td style="color: orange; font-weight: bold;">${student.status}</td>
-                `;
+                
+                if (editingIndex === index) {
+                    // EDIT MODE (Show input fields)
+                    tr.innerHTML = `
+                        <td>${student.date}</td>
+                        <td><input type="text" id="edit-name-${index}" value="${student.name}"></td>
+                        <td><input type="email" id="edit-email-${index}" value="${student.email}"></td>
+                        <td><input type="text" id="edit-phone-${index}" value="${student.phone}"></td>
+                        <td><input type="date" id="edit-dob-${index}" value="${student.dob}"></td>
+                        <td><input type="text" id="edit-qual-${index}" value="${student.qualification}"></td>
+                        <td><input type="text" id="edit-org-${index}" value="${student.organization}"></td>
+                        <td><input type="text" id="edit-coupon-${index}" value="${student.couponUsed || ''}" placeholder="None"></td>
+                        <td><input type="number" id="edit-amount-${index}" value="${student.amount}"></td>
+                        <td><input type="text" id="edit-status-${index}" value="${student.status}"></td>
+                        <td>
+                            <button class="btn-success" onclick="saveRow(${index})">Save</button>
+                            <button class="btn-secondary" onclick="cancelEdit()">Cancel</button>
+                        </td>
+                    `;
+                } else {
+                    // READ MODE (Show plain text)
+                    tr.innerHTML = `
+                        <td>${student.date}</td>
+                        <td><strong>${student.name}</strong></td>
+                        <td>${student.email}</td>
+                        <td>${student.phone}</td>
+                        <td>${student.dob}</td>
+                        <td>${student.qualification}</td>
+                        <td>${student.organization}</td>
+                        <td>${student.couponUsed ? `<strong>${student.couponUsed}</strong>` : 'None'}</td>
+                        <td>₹${student.amount}</td>
+                        <td style="color: orange; font-weight: bold;">${student.status}</td>
+                        <td>
+                            <button class="btn-warning" onclick="editRow(${index})">Edit</button>
+                            <button class="btn-danger" onclick="deleteRow(${index})">Delete</button>
+                        </td>
+                    `;
+                }
                 tbody.appendChild(tr);
             });
         }
+
+        // --- CRUD Operations ---
+
+        function editRow(index) {
+            editingIndex = index;
+            updateUI();
+        }
+
+        function cancelEdit() {
+            editingIndex = -1;
+            updateUI();
+        }
+
+        function saveRow(index) {
+            // Get new values from inputs
+            const name = document.getElementById(`edit-name-${index}`).value.trim();
+            const email = document.getElementById(`edit-email-${index}`).value.trim();
+            const phone = document.getElementById(`edit-phone-${index}`).value.trim();
+            const dob = document.getElementById(`edit-dob-${index}`).value;
+            const qualification = document.getElementById(`edit-qual-${index}`).value.trim();
+            const organization = document.getElementById(`edit-org-${index}`).value.trim();
+            const coupon = document.getElementById(`edit-coupon-${index}`).value.trim();
+            const amount = parseInt(document.getElementById(`edit-amount-${index}`).value) || 0;
+            const status = document.getElementById(`edit-status-${index}`).value.trim();
+
+            // Quick validation
+            if (!name || !email || !phone) {
+                alert("Name, Email, and Phone fields cannot be empty.");
+                return;
+            }
+
+            // Check for duplicate email/phone (excluding the current student being edited)
+            const isDuplicate = enrollments.some((s, i) => 
+                i !== index && (s.email.toLowerCase() === email.toLowerCase() || s.phone === phone)
+            );
+
+            if (isDuplicate) {
+                alert("Error: Another student already has this Email or Phone number!");
+                return;
+            }
+
+            // Save updated data
+            enrollments[index] = {
+                ...enrollments[index], // keep original date
+                name: name,
+                email: email,
+                phone: phone,
+                dob: dob,
+                qualification: qualification,
+                organization: organization,
+                couponUsed: coupon || null, // Empty means none
+                amount: amount,
+                status: status
+            };
+
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(enrollments));
+            editingIndex = -1; // Exit edit mode
+            updateUI();
+        }
+
+        function deleteRow(index) {
+            if (confirm("Are you sure you want to delete this student's record permanently?")) {
+                enrollments.splice(index, 1); // Remove 1 item at index
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(enrollments));
+                updateUI();
+            }
+        }
+
+        // --- Public Form Logic ---
 
         function applyCoupon() {
             const code = document.getElementById('couponInput').value.trim().toUpperCase();
@@ -545,7 +655,7 @@
             } else if (appliedCoupon === 'LEARN300' && count >= 25 && count < 50) {
                 finalPrice = 1199; finalCoupon = 'LEARN300';
             } else if (appliedCoupon) {
-                alert("The coupon expired while you were filling the form. Price updated to ₹1499.");
+                alert("The coupon expired while you were filling the form. Price updated to ₹.");
             }
 
             // 4. Save Data
@@ -572,7 +682,7 @@
             updateUI();
         }
 
-        // --- Admin Functions ---
+        // --- Admin Utility Functions ---
         function adminLogin() {
             const password = prompt("Enter Admin Password:");
             if (password === "10Day-Course") {
@@ -620,7 +730,7 @@
                 const orgs = ["IIT Delhi", "XYZ College", "Tech Corp", "Local University", "Freelancer"];
 
                 for(let i = 1; i <= targetCount; i++) {
-                    let price = 1499;
+                    let price = ;
                     let coupon = null;
                     if (i <= 25) { price = 999; coupon = 'LEARN500'; }
                     else if (i <= 50) { price = 1199; coupon = 'LEARN300'; }
@@ -639,6 +749,7 @@
                     });
                 }
                 localStorage.setItem(STORAGE_KEY, JSON.stringify(enrollments));
+                editingIndex = -1;
                 updateUI();
                 alert(`Simulated ${targetCount} enrollments.`);
             }
